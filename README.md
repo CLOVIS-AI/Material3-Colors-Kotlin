@@ -7,8 +7,7 @@ The port is based on the official Java library.
 
 ## License
 
-<!-- Mentions under which license you are publishing the project. -->
-<!-- Add the full text to the LICENSE file. -->
+This project is licensed under the [Apache 2.0 license](LICENSE).
 
 ## Contributing
 
