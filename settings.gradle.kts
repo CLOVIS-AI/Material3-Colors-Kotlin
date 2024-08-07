@@ -51,6 +51,8 @@ plugins {
 }
 
 include(
+	"colors",
+
 	"gradle:templates:template-app",
 	"gradle:templates:template-lib",
 )
