@@ -16,6 +16,7 @@
 
 package opensavvy.material3.colors.utils
 
+import kotlin.math.PI
 import kotlin.math.abs
 
 /** Utility methods for mathematical operations.  */
@@ -131,4 +132,14 @@ object MathUtils {
 		val c = row[0] * matrix[2][0] + row[1] * matrix[2][1] + row[2] * matrix[2][2]
 		return doubleArrayOf(a, b, c)
 	}
+
+	/**
+	 * Convert degrees to radians.
+	 */
+	internal fun Double.toRadians() = this * PI / 180.0
+
+	/**
+	 * Convert radians to degrees.
+	 */
+	internal fun Double.toDegrees() = this * 180.0 / PI
 }
