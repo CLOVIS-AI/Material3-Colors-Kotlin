@@ -8,7 +8,13 @@ plugins {
 
 @OptIn(ExperimentalWasmDsl::class)
 kotlin {
-	jvm()
+	jvm {
+		testRuns.configureEach {
+			executionTask.configure {
+				useJUnitPlatform()
+			}
+		}
+	}
 	js {
 		browser()
 		nodejs()
