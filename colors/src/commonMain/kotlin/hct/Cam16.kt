@@ -16,10 +16,10 @@
 
 package opensavvy.material3.colors.hct
 
-import opensavvy.material3.colors.utils.ColorUtils.argbFromXyz
-import opensavvy.material3.colors.utils.ColorUtils.linearized
+import opensavvy.material3.colors.utils.Color
 import opensavvy.material3.colors.utils.MathUtils.toDegrees
 import opensavvy.material3.colors.utils.MathUtils.toRadians
+import opensavvy.material3.colors.utils.linearized
 import kotlin.math.*
 
 /**
@@ -117,7 +117,7 @@ class Cam16 private constructor(
 	 * ARGB representation of the color. Assumes the color was viewed in default viewing conditions,
 	 * which are near-identical to the default viewing conditions for sRGB.
 	 */
-	fun toInt(): Int {
+	fun toColor(): Color {
 		return viewed(ViewingConditions.DEFAULT)
 	}
 
@@ -127,9 +127,9 @@ class Cam16 private constructor(
 	 * @param viewingConditions Information about the environment where the color will be viewed.
 	 * @return ARGB representation of color
 	 */
-	fun viewed(viewingConditions: ViewingConditions): Int {
+	fun viewed(viewingConditions: ViewingConditions): Color {
 		val xyz = xyzInViewingConditions(viewingConditions, tempArray)
-		return argbFromXyz(xyz[0], xyz[1], xyz[2])
+		return Color.fromXyz(xyz[0], xyz[1], xyz[2])
 	}
 
 	fun xyzInViewingConditions(viewingConditions: ViewingConditions, returnArray: DoubleArray?): DoubleArray {
@@ -204,6 +204,13 @@ class Cam16 private constructor(
 		 */
 		fun fromInt(argb: Int): Cam16 {
 			return fromIntInViewingConditions(argb, ViewingConditions.DEFAULT)
+		}
+
+		/**
+		 * Create a CAM16 color from a [color], assuming the color was viewed in the default viewing conditions.
+		 */
+		fun fromColor(color: Color): Cam16 {
+			return fromInt(color.argb)
 		}
 
 		/**

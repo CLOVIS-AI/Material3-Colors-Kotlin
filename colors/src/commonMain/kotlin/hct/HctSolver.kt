@@ -16,9 +16,10 @@
 
 package opensavvy.material3.colors.hct
 
-import opensavvy.material3.colors.utils.ColorUtils.argbFromLinrgb
-import opensavvy.material3.colors.utils.ColorUtils.argbFromLstar
-import opensavvy.material3.colors.utils.ColorUtils.yFromLstar
+import opensavvy.material3.colors.utils.Color
+import opensavvy.material3.colors.utils.Color.Companion.fromLinrgb
+import opensavvy.material3.colors.utils.Color.Companion.fromLstar
+import opensavvy.material3.colors.utils.Color.Companion.yFromLstar
 import opensavvy.material3.colors.utils.MathUtils.matrixMultiply
 import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesDouble
 import opensavvy.material3.colors.utils.MathUtils.signum
@@ -565,9 +566,9 @@ object HctSolver {
 	 * @param hueRadians The desired hue in radians.
 	 * @param chroma The desired chroma.
 	 * @param y The desired Y.
-	 * @return The desired color as a hexadecimal integer, if found; 0 otherwise.
+	 * @return The desired color as a hexadecimal integer, if found; [Color.BLACK] otherwise.
 	 */
-	fun findResultByJ(hueRadians: Double, chroma: Double, y: Double): Int {
+	fun findResultByJ(hueRadians: Double, chroma: Double, y: Double): Color {
 		// Initial estimate of j.
 		var j = sqrt(y) * 11.0
 		// ===========================================================
@@ -606,26 +607,26 @@ object HctSolver {
 			// Operations inlined from Cam16 to avoid repeated calculation
 			// ===========================================================
 			if (linrgb[0] < 0 || linrgb[1] < 0 || linrgb[2] < 0) {
-				return 0
+				return Color.BLACK
 			}
 			val kR = Y_FROM_LINRGB[0]
 			val kG = Y_FROM_LINRGB[1]
 			val kB = Y_FROM_LINRGB[2]
 			val fnj = kR * linrgb[0] + kG * linrgb[1] + kB * linrgb[2]
 			if (fnj <= 0) {
-				return 0
+				return Color.BLACK
 			}
 			if (iterationRound == 4 || abs(fnj - y) < 0.002) {
 				if (linrgb[0] > 100.01 || linrgb[1] > 100.01 || linrgb[2] > 100.01) {
-					return 0
+					return Color.BLACK
 				}
-				return argbFromLinrgb(linrgb)
+				return fromLinrgb(linrgb)
 			}
 			// Iterates with Newton method,
 			// Using 2 * fn(j) / j as the approximation of fn'(j)
 			j = j - (fnj - y) * j / (2 * fnj)
 		}
-		return 0
+		return Color.BLACK
 	}
 
 	/**
@@ -638,20 +639,20 @@ object HctSolver {
 	 * chroma, and L* to the desired values, if possible; otherwise, the hue and L* will be
 	 * sufficiently close, and chroma will be maximized.
 	 */
-	fun solveToInt(hueDegrees: Double, chroma: Double, lstar: Double): Int {
+	fun solveToColor(hueDegrees: Double, chroma: Double, lstar: Double): Color {
 		var hueDegrees = hueDegrees
 		if (chroma < 0.0001 || lstar < 0.0001 || lstar > 99.9999) {
-			return argbFromLstar(lstar)
+			return fromLstar(lstar)
 		}
 		hueDegrees = sanitizeDegreesDouble(hueDegrees)
 		val hueRadians: Double = hueDegrees / 180 * PI
 		val y = yFromLstar(lstar)
 		val exactAnswer = findResultByJ(hueRadians, chroma, y)
-		if (exactAnswer != 0) {
+		if (exactAnswer != Color.BLACK) {
 			return exactAnswer
 		}
 		val linrgb = bisectToLimit(y, hueRadians)
-		return argbFromLinrgb(linrgb)
+		return fromLinrgb(linrgb)
 	}
 
 	/**
@@ -665,6 +666,6 @@ object HctSolver {
 	 * sufficiently close, and chroma will be maximized.
 	 */
 	fun solveToCam(hueDegrees: Double, chroma: Double, lstar: Double): Cam16 {
-		return Cam16.fromInt(solveToInt(hueDegrees, chroma, lstar))
+		return Cam16.fromColor(solveToColor(hueDegrees, chroma, lstar))
 	}
 }

@@ -16,9 +16,7 @@
 
 package opensavvy.material3.colors.quantize
 
-import opensavvy.material3.colors.utils.ColorUtils.blueFromArgb
-import opensavvy.material3.colors.utils.ColorUtils.greenFromArgb
-import opensavvy.material3.colors.utils.ColorUtils.redFromArgb
+import opensavvy.material3.colors.utils.Color
 
 /**
  * An image quantizer that divides the image's pixels into clusters by recursively cutting an RGB
@@ -56,9 +54,9 @@ class QuantizerWu : Quantizer {
 		moments = DoubleArray(TOTAL_SIZE)
 
 		for ((pixel, count) in pixels) {
-			val red = redFromArgb(pixel)
-			val green = greenFromArgb(pixel)
-			val blue = blueFromArgb(pixel)
+			val red = Color(pixel).red
+			val green = Color(pixel).green
+			val blue = Color(pixel).blue
 			val bitsToRemove = 8 - INDEX_BITS
 			val iR = (red shr bitsToRemove) + 1
 			val iG = (green shr bitsToRemove) + 1

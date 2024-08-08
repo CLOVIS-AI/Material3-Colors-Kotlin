@@ -18,7 +18,7 @@ package opensavvy.material3.colors.blend
 
 import opensavvy.material3.colors.hct.Cam16
 import opensavvy.material3.colors.hct.Hct
-import opensavvy.material3.colors.utils.ColorUtils.lstarFromArgb
+import opensavvy.material3.colors.utils.Color
 import opensavvy.material3.colors.utils.MathUtils.differenceDegrees
 import opensavvy.material3.colors.utils.MathUtils.rotationDirection
 import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesDouble
@@ -35,16 +35,16 @@ object Blend {
 	 * @return The design color with a hue shifted towards the system's color, a slightly
 	 * warmer/cooler variant of the design color's hue.
 	 */
-	fun harmonize(designColor: Int, sourceColor: Int): Int {
-		val fromHct = Hct.fromInt(designColor)
-		val toHct = Hct.fromInt(sourceColor)
+	fun harmonize(designColor: Color, sourceColor: Color): Color {
+		val fromHct = Hct.fromColor(designColor)
+		val toHct = Hct.fromColor(sourceColor)
 		val differenceDegrees = differenceDegrees(fromHct.getHue(), toHct.getHue())
 		val rotationDegrees = min(differenceDegrees * 0.5, 15.0)
 		val outputHue =
 			sanitizeDegreesDouble(
 				fromHct.getHue()
 					+ rotationDegrees * rotationDirection(fromHct.getHue(), toHct.getHue()))
-		return Hct.from(outputHue, fromHct.getChroma(), fromHct.getTone()).toInt()
+		return Hct.from(outputHue, fromHct.getChroma(), fromHct.getTone()).toColor()
 	}
 
 	/**
@@ -56,12 +56,12 @@ object Blend {
 	 * @param amount how much blending to perform; 0.0 >= and <= 1.0
 	 * @return from, with a hue blended towards to. Chroma and tone are constant.
 	 */
-	fun hctHue(from: Int, to: Int, amount: Double): Int {
+	fun hctHue(from: Color, to: Color, amount: Double): Color {
 		val ucs = cam16Ucs(from, to, amount)
-		val ucsCam = Cam16.fromInt(ucs)
-		val fromCam = Cam16.fromInt(from)
-		val blended = Hct.from(ucsCam.hue, fromCam.chroma, lstarFromArgb(from))
-		return blended.toInt()
+		val ucsCam = Cam16.fromColor(ucs)
+		val fromCam = Cam16.fromColor(from)
+		val blended = Hct.from(ucsCam.hue, fromCam.chroma, from.toLstar())
+		return blended.toColor()
 	}
 
 	/**
@@ -72,9 +72,9 @@ object Blend {
 	 * @param amount how much blending to perform; 0.0 >= and <= 1.0
 	 * @return from, blended towards to. Hue, chroma, and tone will change.
 	 */
-	fun cam16Ucs(from: Int, to: Int, amount: Double): Int {
-		val fromCam = Cam16.fromInt(from)
-		val toCam = Cam16.fromInt(to)
+	fun cam16Ucs(from: Color, to: Color, amount: Double): Color {
+		val fromCam = Cam16.fromColor(from)
+		val toCam = Cam16.fromColor(to)
 		val fromJ = fromCam.jstar
 		val fromA = fromCam.astar
 		val fromB = fromCam.bstar
@@ -84,6 +84,6 @@ object Blend {
 		val jstar = fromJ + (toJ - fromJ) * amount
 		val astar = fromA + (toA - fromA) * amount
 		val bstar = fromB + (toB - fromB) * amount
-		return Cam16.fromUcs(jstar, astar, bstar).toInt()
+		return Cam16.fromUcs(jstar, astar, bstar).toColor()
 	}
 }

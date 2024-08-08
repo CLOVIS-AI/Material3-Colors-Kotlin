@@ -18,6 +18,7 @@ package opensavvy.material3.colors.dynamiccolor
 
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.palettes.TonalPalette
+import opensavvy.material3.colors.utils.Color
 import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesDouble
 import kotlin.jvm.JvmOverloads
 
@@ -38,7 +39,7 @@ open class DynamicScheme @JvmOverloads constructor(
 	val neutralVariantPalette: TonalPalette,
 	errorPalette: TonalPalette? = null,
 ) {
-	val sourceColorArgb: Int = sourceColorHct.toInt()
+	val sourceColorArgb: Color = sourceColorHct.toColor()
 
 	val errorPalette: TonalPalette = errorPalette ?: TonalPalette.fromHueAndChroma(25.0, 84.0)
 
@@ -46,194 +47,194 @@ open class DynamicScheme @JvmOverloads constructor(
 		return dynamicColor.getHct(this)
 	}
 
-	fun getArgb(dynamicColor: DynamicColor): Int {
+	fun getArgb(dynamicColor: DynamicColor): Color {
 		return dynamicColor.getArgb(this)
 	}
 
-	val primaryPaletteKeyColor: Int
+	val primaryPaletteKeyColor: Color
 		get() = getArgb(MaterialDynamicColors().primaryPaletteKeyColor())
 
-	val secondaryPaletteKeyColor: Int
+	val secondaryPaletteKeyColor: Color
 		get() = getArgb(MaterialDynamicColors().secondaryPaletteKeyColor())
 
-	val tertiaryPaletteKeyColor: Int
+	val tertiaryPaletteKeyColor: Color
 		get() = getArgb(MaterialDynamicColors().tertiaryPaletteKeyColor())
 
-	val neutralPaletteKeyColor: Int
+	val neutralPaletteKeyColor: Color
 		get() = getArgb(MaterialDynamicColors().neutralPaletteKeyColor())
 
-	val neutralVariantPaletteKeyColor: Int
+	val neutralVariantPaletteKeyColor: Color
 		get() = getArgb(MaterialDynamicColors().neutralVariantPaletteKeyColor())
 
-	val background: Int
+	val background: Color
 		get() = getArgb(MaterialDynamicColors().background())
 
-	val onBackground: Int
+	val onBackground: Color
 		get() = getArgb(MaterialDynamicColors().onBackground())
 
-	val surface: Int
+	val surface: Color
 		get() = getArgb(MaterialDynamicColors().surface())
 
-	val surfaceDim: Int
+	val surfaceDim: Color
 		get() = getArgb(MaterialDynamicColors().surfaceDim())
 
-	val surfaceBright: Int
+	val surfaceBright: Color
 		get() = getArgb(MaterialDynamicColors().surfaceBright())
 
-	val surfaceContainerLowest: Int
+	val surfaceContainerLowest: Color
 		get() = getArgb(MaterialDynamicColors().surfaceContainerLowest())
 
-	val surfaceContainerLow: Int
+	val surfaceContainerLow: Color
 		get() = getArgb(MaterialDynamicColors().surfaceContainerLow())
 
-	val surfaceContainer: Int
+	val surfaceContainer: Color
 		get() = getArgb(MaterialDynamicColors().surfaceContainer())
 
-	val surfaceContainerHigh: Int
+	val surfaceContainerHigh: Color
 		get() = getArgb(MaterialDynamicColors().surfaceContainerHigh())
 
-	val surfaceContainerHighest: Int
+	val surfaceContainerHighest: Color
 		get() = getArgb(MaterialDynamicColors().surfaceContainerHighest())
 
-	val onSurface: Int
+	val onSurface: Color
 		get() = getArgb(MaterialDynamicColors().onSurface())
 
-	val surfaceVariant: Int
+	val surfaceVariant: Color
 		get() = getArgb(MaterialDynamicColors().surfaceVariant())
 
-	val onSurfaceVariant: Int
+	val onSurfaceVariant: Color
 		get() = getArgb(MaterialDynamicColors().onSurfaceVariant())
 
-	val inverseSurface: Int
+	val inverseSurface: Color
 		get() = getArgb(MaterialDynamicColors().inverseSurface())
 
-	val inverseOnSurface: Int
+	val inverseOnSurface: Color
 		get() = getArgb(MaterialDynamicColors().inverseOnSurface())
 
-	val outline: Int
+	val outline: Color
 		get() = getArgb(MaterialDynamicColors().outline())
 
-	val outlineVariant: Int
+	val outlineVariant: Color
 		get() = getArgb(MaterialDynamicColors().outlineVariant())
 
-	val shadow: Int
+	val shadow: Color
 		get() = getArgb(MaterialDynamicColors().shadow())
 
-	val scrim: Int
+	val scrim: Color
 		get() = getArgb(MaterialDynamicColors().scrim())
 
-	val surfaceTint: Int
+	val surfaceTint: Color
 		get() = getArgb(MaterialDynamicColors().surfaceTint())
 
-	val primary: Int
+	val primary: Color
 		get() = getArgb(MaterialDynamicColors().primary())
 
-	val onPrimary: Int
+	val onPrimary: Color
 		get() = getArgb(MaterialDynamicColors().onPrimary())
 
-	val primaryContainer: Int
+	val primaryContainer: Color
 		get() = getArgb(MaterialDynamicColors().primaryContainer())
 
-	val onPrimaryContainer: Int
+	val onPrimaryContainer: Color
 		get() = getArgb(MaterialDynamicColors().onPrimaryContainer())
 
-	val inversePrimary: Int
+	val inversePrimary: Color
 		get() = getArgb(MaterialDynamicColors().inversePrimary())
 
-	val secondary: Int
+	val secondary: Color
 		get() = getArgb(MaterialDynamicColors().secondary())
 
-	val onSecondary: Int
+	val onSecondary: Color
 		get() = getArgb(MaterialDynamicColors().onSecondary())
 
-	val secondaryContainer: Int
+	val secondaryContainer: Color
 		get() = getArgb(MaterialDynamicColors().secondaryContainer())
 
-	val onSecondaryContainer: Int
+	val onSecondaryContainer: Color
 		get() = getArgb(MaterialDynamicColors().onSecondaryContainer())
 
-	val tertiary: Int
+	val tertiary: Color
 		get() = getArgb(MaterialDynamicColors().tertiary())
 
-	val onTertiary: Int
+	val onTertiary: Color
 		get() = getArgb(MaterialDynamicColors().onTertiary())
 
-	val tertiaryContainer: Int
+	val tertiaryContainer: Color
 		get() = getArgb(MaterialDynamicColors().tertiaryContainer())
 
-	val onTertiaryContainer: Int
+	val onTertiaryContainer: Color
 		get() = getArgb(MaterialDynamicColors().onTertiaryContainer())
 
-	val error: Int
+	val error: Color
 		get() = getArgb(MaterialDynamicColors().error())
 
-	val onError: Int
+	val onError: Color
 		get() = getArgb(MaterialDynamicColors().onError())
 
-	val errorContainer: Int
+	val errorContainer: Color
 		get() = getArgb(MaterialDynamicColors().errorContainer())
 
-	val onErrorContainer: Int
+	val onErrorContainer: Color
 		get() = getArgb(MaterialDynamicColors().onErrorContainer())
 
-	val primaryFixed: Int
+	val primaryFixed: Color
 		get() = getArgb(MaterialDynamicColors().primaryFixed())
 
-	val primaryFixedDim: Int
+	val primaryFixedDim: Color
 		get() = getArgb(MaterialDynamicColors().primaryFixedDim())
 
-	val onPrimaryFixed: Int
+	val onPrimaryFixed: Color
 		get() = getArgb(MaterialDynamicColors().onPrimaryFixed())
 
-	val onPrimaryFixedVariant: Int
+	val onPrimaryFixedVariant: Color
 		get() = getArgb(MaterialDynamicColors().onPrimaryFixedVariant())
 
-	val secondaryFixed: Int
+	val secondaryFixed: Color
 		get() = getArgb(MaterialDynamicColors().secondaryFixed())
 
-	val secondaryFixedDim: Int
+	val secondaryFixedDim: Color
 		get() = getArgb(MaterialDynamicColors().secondaryFixedDim())
 
-	val onSecondaryFixed: Int
+	val onSecondaryFixed: Color
 		get() = getArgb(MaterialDynamicColors().onSecondaryFixed())
 
-	val onSecondaryFixedVariant: Int
+	val onSecondaryFixedVariant: Color
 		get() = getArgb(MaterialDynamicColors().onSecondaryFixedVariant())
 
-	val tertiaryFixed: Int
+	val tertiaryFixed: Color
 		get() = getArgb(MaterialDynamicColors().tertiaryFixed())
 
-	val tertiaryFixedDim: Int
+	val tertiaryFixedDim: Color
 		get() = getArgb(MaterialDynamicColors().tertiaryFixedDim())
 
-	val onTertiaryFixed: Int
+	val onTertiaryFixed: Color
 		get() = getArgb(MaterialDynamicColors().onTertiaryFixed())
 
-	val onTertiaryFixedVariant: Int
+	val onTertiaryFixedVariant: Color
 		get() = getArgb(MaterialDynamicColors().onTertiaryFixedVariant())
 
-	val controlActivated: Int
+	val controlActivated: Color
 		get() = getArgb(MaterialDynamicColors().controlActivated())
 
-	val controlNormal: Int
+	val controlNormal: Color
 		get() = getArgb(MaterialDynamicColors().controlNormal())
 
-	val controlHighlight: Int
+	val controlHighlight: Color
 		get() = getArgb(MaterialDynamicColors().controlHighlight())
 
-	val textPrimaryInverse: Int
+	val textPrimaryInverse: Color
 		get() = getArgb(MaterialDynamicColors().textPrimaryInverse())
 
-	val textSecondaryAndTertiaryInverse: Int
+	val textSecondaryAndTertiaryInverse: Color
 		get() = getArgb(MaterialDynamicColors().textSecondaryAndTertiaryInverse())
 
-	val textPrimaryInverseDisableOnly: Int
+	val textPrimaryInverseDisableOnly: Color
 		get() = getArgb(MaterialDynamicColors().textPrimaryInverseDisableOnly())
 
-	val textSecondaryAndTertiaryInverseDisabled: Int
+	val textSecondaryAndTertiaryInverseDisabled: Color
 		get() = getArgb(MaterialDynamicColors().textSecondaryAndTertiaryInverseDisabled())
 
-	val textHintInverse: Int
+	val textHintInverse: Color
 		get() = getArgb(MaterialDynamicColors().textHintInverse())
 
 	companion object {

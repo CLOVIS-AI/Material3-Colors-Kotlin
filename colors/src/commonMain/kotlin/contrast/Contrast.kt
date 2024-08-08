@@ -16,8 +16,8 @@
 
 package opensavvy.material3.colors.contrast
 
-import opensavvy.material3.colors.utils.ColorUtils.lstarFromY
-import opensavvy.material3.colors.utils.ColorUtils.yFromLstar
+import opensavvy.material3.colors.utils.Color.Companion.lstarFromY
+import opensavvy.material3.colors.utils.Color.Companion.yFromLstar
 import kotlin.math.abs
 import kotlin.math.max
 
