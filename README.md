@@ -1,15 +1,13 @@
-# Playground: Gradle
+# Material You for Kotlin
 
-<!-- When using the Playground to bootstrap a project, replace this by your project description. -->
-This a template to easily bootstrap your projects.
+Kotlin Multiplatform port of the [Material You color utilities](https://github.com/material-foundation/material-color-utilities).
 
-> This project is part of the OpenSavvy Playground.
-> To learn more, visit [this page](docs/playground/README.md).
+This library allows to generate Material You color palettes from single colors, etc.
+The port is based on the official Java library.
 
 ## License
 
-<!-- Mentions under which license you are publishing the project. -->
-<!-- Add the full text to the LICENSE file. -->
+This project is licensed under the [Apache 2.0 license](LICENSE).
 
 ## Contributing
 
