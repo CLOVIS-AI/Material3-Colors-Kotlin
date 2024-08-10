@@ -17,6 +17,7 @@
 package opensavvy.material3.colors.palettes
 
 import opensavvy.material3.colors.hct.Hct
+import opensavvy.material3.colors.utils.Color
 import kotlin.math.abs
 
 /**
@@ -33,7 +34,7 @@ class TonalPalette private constructor(
 	/** The key color is the first tone, starting from T50, that matches the palette's chroma.  */
 	var keyColor: Hct,
 ) {
-	var cache: MutableMap<Int, Int> = HashMap<Int, Int>()
+	var cache: MutableMap<Int, Color> = HashMap()
 
 	/**
 	 * Create an ARGB color with HCT hue and chroma of this Tones instance, and the provided HCT tone.
@@ -41,10 +42,10 @@ class TonalPalette private constructor(
 	 * @param tone HCT tone, measured from 0 to 100.
 	 * @return ARGB representation of a color with that tone.
 	 */
-	fun tone(tone: Int): Int {
+	fun tone(tone: Int): Color {
 		var color = cache[tone]
 		if (color == null) {
-			color = Hct.from(this.hue, this.chroma, tone.toDouble()).toInt()
+			color = Hct.from(this.hue, this.chroma, tone.toDouble()).toColor()
 			cache[tone] = color
 		}
 		return color

@@ -16,8 +16,8 @@
 
 package opensavvy.material3.colors.hct
 
-import opensavvy.material3.colors.utils.ColorUtils.lstarFromArgb
-import opensavvy.material3.colors.utils.ColorUtils.lstarFromY
+import opensavvy.material3.colors.utils.Color
+import opensavvy.material3.colors.utils.Color.Companion.lstarFromY
 
 /**
  * A color system built using CAM16 hue and chroma, and L* from L*a*b*.
@@ -40,11 +40,11 @@ import opensavvy.material3.colors.utils.ColorUtils.lstarFromY
  * measurement system that can also accurately render what colors will appear as in different
  * lighting environments.
  */
-class Hct private constructor(argb: Int) {
+class Hct private constructor(argb: Color) {
 	private var hue = 0.0
 	private var chroma = 0.0
 	private var tone = 0.0
-	private var argb = 0
+	private var argb: Color = Color(0)
 
 	init {
 		setInternalState(argb)
@@ -62,7 +62,7 @@ class Hct private constructor(argb: Int) {
 		return tone
 	}
 
-	fun toInt(): Int {
+	fun toColor(): Color {
 		return argb
 	}
 
@@ -73,7 +73,7 @@ class Hct private constructor(argb: Int) {
 	 * @param newHue 0 <= newHue < 360; invalid values are corrected.
 	 */
 	fun setHue(newHue: Double) {
-		setInternalState(HctSolver.solveToInt(newHue, chroma, tone))
+		setInternalState(HctSolver.solveToColor(newHue, chroma, tone))
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Hct private constructor(argb: Int) {
 	 * @param newChroma 0 <= newChroma < ?
 	 */
 	fun setChroma(newChroma: Double) {
-		setInternalState(HctSolver.solveToInt(hue, newChroma, tone))
+		setInternalState(HctSolver.solveToColor(hue, newChroma, tone))
 	}
 
 	/**
@@ -93,7 +93,7 @@ class Hct private constructor(argb: Int) {
 	 * @param newTone 0 <= newTone <= 100; invalid valids are corrected.
 	 */
 	fun setTone(newTone: Double) {
-		setInternalState(HctSolver.solveToInt(hue, chroma, newTone))
+		setInternalState(HctSolver.solveToColor(hue, chroma, newTone))
 	}
 
 	/**
@@ -114,7 +114,7 @@ class Hct private constructor(argb: Int) {
 	 */
 	fun inViewingConditions(vc: ViewingConditions): Hct {
 		// 1. Use CAM16 to find XYZ coordinates of color in specified VC.
-		val cam16 = Cam16.fromInt(toInt())
+		val cam16 = Cam16.fromColor(toColor())
 		val viewedInVc = cam16.xyzInViewingConditions(vc, null)
 
 		// 2. Create CAM16 of those XYZ coordinates in default VC.
@@ -129,12 +129,12 @@ class Hct private constructor(argb: Int) {
 			recastInVc.hue, recastInVc.chroma, lstarFromY(viewedInVc[1]))
 	}
 
-	private fun setInternalState(argb: Int) {
+	private fun setInternalState(argb: Color) {
 		this.argb = argb
-		val cam = Cam16.fromInt(argb)
+		val cam = Cam16.fromColor(argb)
 		hue = cam.hue
 		chroma = cam.chroma
-		this.tone = lstarFromArgb(argb)
+		this.tone = argb.toLstar()
 	}
 
 	companion object {
@@ -148,7 +148,7 @@ class Hct private constructor(argb: Int) {
 		 * @return HCT representation of a color in default viewing conditions.
 		 */
 		fun from(hue: Double, chroma: Double, tone: Double): Hct {
-			val argb: Int = HctSolver.solveToInt(hue, chroma, tone)
+			val argb: Color = HctSolver.solveToColor(hue, chroma, tone)
 			return Hct(argb)
 		}
 
@@ -159,7 +159,11 @@ class Hct private constructor(argb: Int) {
 		 * @return HCT representation of a color in default viewing conditions
 		 */
 		fun fromInt(argb: Int): Hct {
-			return Hct(argb)
+			return Hct(Color(argb))
+		}
+
+		fun fromColor(color: Color): Hct {
+			return Hct(color)
 		}
 	}
 }

@@ -16,8 +16,8 @@
 
 package opensavvy.material3.colors.hct
 
-import opensavvy.material3.colors.utils.ColorUtils.whitePointD65
-import opensavvy.material3.colors.utils.ColorUtils.yFromLstar
+import opensavvy.material3.colors.utils.Color.Companion.whitePointD65
+import opensavvy.material3.colors.utils.Color.Companion.yFromLstar
 import opensavvy.material3.colors.utils.MathUtils.clampDouble
 import opensavvy.material3.colors.utils.MathUtils.lerp
 import kotlin.math.*
@@ -140,7 +140,7 @@ class ViewingConditions
 		 */
 		fun defaultWithBackgroundLstar(lstar: Double): ViewingConditions {
 			return make(
-				whitePointD65(),
+				whitePointD65,
 				(200.0 / PI * yFromLstar(50.0) / 100f),
 				lstar,
 				2.0,

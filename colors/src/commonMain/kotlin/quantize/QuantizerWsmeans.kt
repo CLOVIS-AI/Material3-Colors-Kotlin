@@ -16,6 +16,7 @@
 
 package opensavvy.material3.colors.quantize
 
+import opensavvy.material3.colors.utils.Color
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.sqrt
@@ -67,7 +68,7 @@ object QuantizerWsmeans {
 			val inputPixel = inputPixels[i]
 			val pixelCount = pixelToCount[inputPixel]
 			if (pixelCount == null) {
-				points[pointCount] = pointProvider.fromInt(inputPixel)
+				points[pointCount] = pointProvider.fromColor(Color(inputPixel))
 				pixels[pointCount] = inputPixel
 				pointCount++
 
@@ -92,7 +93,7 @@ object QuantizerWsmeans {
 		var clustersCreated = 0
 		val clusters = Array(startingClusters.size) {
 			clustersCreated++
-			pointProvider.fromInt(startingClusters[it])
+			pointProvider.fromColor(Color(startingClusters[it]))
 		}
 
 		val additionalClustersNeeded = clusterCount - clustersCreated
@@ -201,7 +202,7 @@ object QuantizerWsmeans {
 				continue
 			}
 
-			val possibleNewCluster = pointProvider.toInt(clusters[i])
+			val possibleNewCluster = pointProvider.toColor(clusters[i]).argb
 			if (argbToPopulation.containsKey(possibleNewCluster)) {
 				continue
 			}

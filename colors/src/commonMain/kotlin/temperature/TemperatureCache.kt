@@ -17,7 +17,6 @@
 package opensavvy.material3.colors.temperature
 
 import opensavvy.material3.colors.hct.Hct
-import opensavvy.material3.colors.utils.ColorUtils.labFromArgb
 import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesDouble
 import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesInt
 import opensavvy.material3.colors.utils.MathUtils.toDegrees
@@ -309,7 +308,7 @@ class TemperatureCache(
 		 * - Upper bound: 8.61. Chroma is infinite. Assuming max of Lab chroma 130.
 		 */
 		fun rawTemperature(color: Hct): Double {
-			val lab = labFromArgb(color.toInt())
+			val lab = color.toColor().toLab()
 			val hue = sanitizeDegreesDouble(atan2(lab[2], lab[1]).toDegrees())
 			val chroma = hypot(lab[1], lab[2])
 			return (-0.5

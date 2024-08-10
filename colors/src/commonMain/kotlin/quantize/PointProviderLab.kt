@@ -16,8 +16,8 @@
 
 package opensavvy.material3.colors.quantize
 
-import opensavvy.material3.colors.utils.ColorUtils.argbFromLab
-import opensavvy.material3.colors.utils.ColorUtils.labFromArgb
+import opensavvy.material3.colors.utils.Color
+import opensavvy.material3.colors.utils.Color.Companion.fromLab
 
 /**
  * Provides conversions needed for K-Means quantization. Converting input to points, and converting
@@ -27,14 +27,14 @@ class PointProviderLab : PointProvider {
 	/**
 	 * Convert a color represented in ARGB to a 3-element array of L*a*b* coordinates of the color.
 	 */
-	override fun fromInt(argb: Int): DoubleArray {
-		val lab = labFromArgb(argb)
+	override fun fromColor(argb: Color): DoubleArray {
+		val lab = argb.toLab()
 		return doubleArrayOf(lab[0], lab[1], lab[2])
 	}
 
 	/** Convert a 3-element array to a color represented in ARGB.  */
-	override fun toInt(point: DoubleArray): Int {
-		return argbFromLab(point[0], point[1], point[2])
+	override fun toColor(point: DoubleArray): Color {
+		return fromLab(point[0], point[1], point[2])
 	}
 
 	/**

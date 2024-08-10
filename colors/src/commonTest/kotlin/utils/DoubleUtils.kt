@@ -14,26 +14,14 @@
  * limitations under the License.
  */
 
-package opensavvy.material3.colors.quantize
+package opensavvy.material3.colors.utils
 
-import opensavvy.material3.colors.utils.Color
+import opensavvy.prepared.runner.kotest.PreparedSpec
+import kotlin.js.JsName
 
-/** An interface to allow use of different color spaces by quantizers.  */
-interface PointProvider {
-
-	/**
-	 * The four components in the color space, from a sRGB [color].
-	 */
-	fun fromColor(color: Color): DoubleArray
-
-	/**
-	 * The color representation of this [point].
-	 */
-	fun toColor(point: DoubleArray): Color
-
-	/**
-	 * Squared distance between two colors. Distance is defined by scientific color spaces and
-	 * referred to as delta E.
-	 */
-	fun distance(a: DoubleArray, b: DoubleArray): Double
+@JsName("plusMinus")
+fun checkDouble(actual: Double, expected: Double, epsilon: Double = 0.000_000_000_000_001) {
+	val expectedMin = expected - epsilon
+	val expectedMax = expected + epsilon
+	check(actual in expectedMin..expectedMax) { "Expected a value of $actual ± $epsilon, but found $expected" }
 }
