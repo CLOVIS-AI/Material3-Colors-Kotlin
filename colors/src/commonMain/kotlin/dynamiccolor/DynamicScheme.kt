@@ -19,7 +19,7 @@ package opensavvy.material3.colors.dynamiccolor
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.palettes.TonalPalette
 import opensavvy.material3.colors.utils.Color
-import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesDouble
+import opensavvy.material3.colors.utils.sanitizeDegreesDouble
 import kotlin.jvm.JvmOverloads
 
 /**

@@ -20,7 +20,7 @@ import opensavvy.material3.colors.dynamiccolor.DynamicScheme
 import opensavvy.material3.colors.dynamiccolor.Variant
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.palettes.TonalPalette
-import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesDouble
+import opensavvy.material3.colors.utils.sanitizeDegreesDouble
 
 /** A calm theme, sedated colors that aren't particularly chromatic.  */
 class SchemeTonalSpot(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Double) : DynamicScheme(

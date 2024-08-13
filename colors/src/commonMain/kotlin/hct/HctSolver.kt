@@ -20,9 +20,9 @@ import opensavvy.material3.colors.utils.Color
 import opensavvy.material3.colors.utils.Color.Companion.fromLinrgb
 import opensavvy.material3.colors.utils.Color.Companion.fromLstar
 import opensavvy.material3.colors.utils.Color.Companion.yFromLstar
-import opensavvy.material3.colors.utils.MathUtils.matrixMultiply
-import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesDouble
-import opensavvy.material3.colors.utils.MathUtils.signum
+import opensavvy.material3.colors.utils.matrixMultiply
+import opensavvy.material3.colors.utils.sanitizeDegreesDouble
+import opensavvy.material3.colors.utils.signum
 import kotlin.math.*
 
 /** A class that solves the HCT equation.  */

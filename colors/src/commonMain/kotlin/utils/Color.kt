@@ -84,7 +84,7 @@ value class Color(
 		val r = linearized(red)
 		val g = linearized(green)
 		val b = linearized(blue)
-		return MathUtils.matrixMultiply(doubleArrayOf(r, g, b), SRGB_TO_XYZ)
+		return matrixMultiply(doubleArrayOf(r, g, b), SRGB_TO_XYZ)
 	}
 
 	/**
@@ -277,7 +277,7 @@ internal fun delinearized(rgbComponent: Double): Int {
 	} else {
 		1.055 * normalized.pow(1.0 / 2.4) - 0.055
 	}
-	return MathUtils.clampInt(0, 255, round(delinearized * 255.0).toInt())
+	return clampInt(0, 255, round(delinearized * 255.0).toInt())
 }
 
 private val SRGB_TO_XYZ: Array<DoubleArray> = arrayOf(
