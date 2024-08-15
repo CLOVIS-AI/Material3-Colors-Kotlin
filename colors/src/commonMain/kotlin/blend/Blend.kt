@@ -19,9 +19,9 @@ package opensavvy.material3.colors.blend
 import opensavvy.material3.colors.hct.Cam16
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.utils.Color
-import opensavvy.material3.colors.utils.MathUtils.differenceDegrees
-import opensavvy.material3.colors.utils.MathUtils.rotationDirection
-import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesDouble
+import opensavvy.material3.colors.utils.differenceDegrees
+import opensavvy.material3.colors.utils.rotationDirection
+import opensavvy.material3.colors.utils.sanitizeDegreesDouble
 import kotlin.math.min
 
 /** Functions for blending in HCT and CAM16.  */

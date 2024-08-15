@@ -16,7 +16,7 @@
 
 package opensavvy.material3.colors.dynamiccolor
 
-import opensavvy.material3.colors.utils.MathUtils.lerp
+import opensavvy.material3.colors.utils.lerp
 
 /**
  * A class containing a value that changes with the contrast level.

@@ -18,8 +18,8 @@ package opensavvy.material3.colors.score
 
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.utils.Color
-import opensavvy.material3.colors.utils.MathUtils.differenceDegrees
-import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesInt
+import opensavvy.material3.colors.utils.differenceDegrees
+import opensavvy.material3.colors.utils.sanitizeDegreesInt
 import kotlin.jvm.JvmOverloads
 import kotlin.math.floor
 import kotlin.math.roundToInt

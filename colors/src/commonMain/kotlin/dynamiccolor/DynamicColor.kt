@@ -24,8 +24,8 @@ import opensavvy.material3.colors.contrast.Contrast.ratioOfTones
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.palettes.TonalPalette
 import opensavvy.material3.colors.utils.Color
-import opensavvy.material3.colors.utils.MathUtils.clampDouble
-import opensavvy.material3.colors.utils.MathUtils.clampInt
+import opensavvy.material3.colors.utils.clampDouble
+import opensavvy.material3.colors.utils.clampInt
 import kotlin.math.*
 
 /**

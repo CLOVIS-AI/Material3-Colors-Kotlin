@@ -20,7 +20,7 @@ import opensavvy.material3.colors.dynamiccolor.DynamicScheme
 import opensavvy.material3.colors.dynamiccolor.Variant
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.palettes.TonalPalette
-import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesDouble
+import opensavvy.material3.colors.utils.sanitizeDegreesDouble
 
 /** A playful theme - the source color's hue does not appear in the theme.  */
 class SchemeRainbow(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Double) : DynamicScheme(

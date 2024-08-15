@@ -17,10 +17,10 @@
 package opensavvy.material3.colors.temperature
 
 import opensavvy.material3.colors.hct.Hct
-import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesDouble
-import opensavvy.material3.colors.utils.MathUtils.sanitizeDegreesInt
-import opensavvy.material3.colors.utils.MathUtils.toDegrees
-import opensavvy.material3.colors.utils.MathUtils.toRadians
+import opensavvy.material3.colors.utils.sanitizeDegreesDouble
+import opensavvy.material3.colors.utils.sanitizeDegreesInt
+import opensavvy.material3.colors.utils.toDegrees
+import opensavvy.material3.colors.utils.toRadians
 import kotlin.math.*
 
 /**
