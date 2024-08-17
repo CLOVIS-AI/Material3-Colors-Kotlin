@@ -137,6 +137,25 @@ class Hct private constructor(argb: Color) {
 		this.tone = argb.toLstar()
 	}
 
+	// region Identity
+
+	override fun equals(other: Any?): Boolean {
+		if (this === other) return true
+		if (other !is Hct) return false
+
+		if (argb != other.argb) return false
+
+		return true
+	}
+
+	override fun hashCode(): Int =
+		argb.hashCode()
+
+	// endregion
+
+	override fun toString(): String =
+		"Hct($hue $chroma $tone • $argb)"
+
 	companion object {
 		/**
 		 * Create an HCT color from hue, chroma, and tone.

@@ -290,6 +290,9 @@ class TemperatureCache(
 		/** Warmest color with same chroma and tone as input.  */
 		get() = hctsByTemp[hctsByTemp.size - 1]
 
+	override fun toString(): String =
+		"Temperature cache of $input"
+
 	companion object {
 		/**
 		 * Value representing cool-warm factor of a color. Values below 0 are considered cool, above,
