@@ -39,7 +39,7 @@ open class DynamicScheme @JvmOverloads constructor(
 	val neutralVariantPalette: TonalPalette,
 	errorPalette: TonalPalette? = null,
 ) {
-	val sourceColorArgb: Color = sourceColorHct.toColor()
+	val sourceColorArgb: Color = sourceColorHct.argb
 
 	val errorPalette: TonalPalette = errorPalette ?: TonalPalette.fromHueAndChroma(25.0, 84.0)
 
@@ -249,7 +249,7 @@ open class DynamicScheme @JvmOverloads constructor(
 		 * @return Color's hue with a rotation applied.
 		 */
 		fun getRotatedHue(sourceColorHct: Hct, hues: DoubleArray, rotations: DoubleArray): Double {
-			val sourceHue = sourceColorHct.getHue()
+			val sourceHue = sourceColorHct.hue
 			if (rotations.size == 1) {
 				return sanitizeDegreesDouble(sourceHue + rotations[0])
 			}

@@ -123,7 +123,7 @@ class DynamicColor(
 	 * dark mode or light mode, and what the desired contrast level is.
 	 */
 	fun getArgb(scheme: DynamicScheme): Color {
-		val argb = getHct(scheme).toColor()
+		val argb = getHct(scheme).argb
 		if (opacity == null) {
 			return argb
 		}
@@ -431,12 +431,12 @@ class DynamicColor(
 		 * @param argb The source color from which to extract the hue and chroma.
 		 */
 		fun fromArgb(name: String, argb: Int): DynamicColor {
-			val hct = Hct.fromInt(argb)
+			val hct = Hct(Color(argb))
 			val palette = TonalPalette.fromInt(argb)
 			return fromPalette(
 				name = name,
 				palette = { palette },
-				tone = { hct.getTone() }
+				tone = { hct.tone }
 			)
 		}
 

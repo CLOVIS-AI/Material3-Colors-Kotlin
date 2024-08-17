@@ -43,14 +43,14 @@ class SchemeContent(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Double)
 	variant = Variant.CONTENT,
 	isDark = isDark,
 	contrastLevel = contrastLevel,
-	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), sourceColorHct.getChroma()),
+	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, sourceColorHct.chroma),
 	secondaryPalette = TonalPalette.fromHueAndChroma(
-		sourceColorHct.getHue(),
-		max(sourceColorHct.getChroma() - 32.0, sourceColorHct.getChroma() * 0.5)),
+		sourceColorHct.hue,
+		max(sourceColorHct.chroma - 32.0, sourceColorHct.chroma * 0.5)),
 	tertiaryPalette = TonalPalette.fromHct(
 		DislikeAnalyzer.fixIfDisliked(
 			TemperatureCache(sourceColorHct)
 				.getAnalogousColors( /* count= */3,  /* divisions= */6)[2])),
-	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), sourceColorHct.getChroma() / 8.0),
+	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, sourceColorHct.chroma / 8.0),
 	neutralVariantPalette = TonalPalette.fromHueAndChroma(
-		sourceColorHct.getHue(), (sourceColorHct.getChroma() / 8.0) + 4.0))
+		sourceColorHct.hue, (sourceColorHct.chroma / 8.0) + 4.0))

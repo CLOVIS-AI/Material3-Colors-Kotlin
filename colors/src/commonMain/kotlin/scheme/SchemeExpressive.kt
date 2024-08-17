@@ -29,15 +29,15 @@ class SchemeExpressive(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Doub
 	isDark = isDark,
 	contrastLevel = contrastLevel,
 	primaryPalette = TonalPalette.fromHueAndChroma(
-		sanitizeDegreesDouble(sourceColorHct.getHue() + 240.0), 40.0),
+		sanitizeDegreesDouble(sourceColorHct.hue + 240.0), 40.0),
 	secondaryPalette = TonalPalette.fromHueAndChroma(
 		getRotatedHue(sourceColorHct, HUES, SECONDARY_ROTATIONS), 24.0),
 	tertiaryPalette = TonalPalette.fromHueAndChroma(
 		getRotatedHue(sourceColorHct, HUES, TERTIARY_ROTATIONS), 32.0),
 	neutralPalette = TonalPalette.fromHueAndChroma(
-		sanitizeDegreesDouble(sourceColorHct.getHue() + 15.0), 8.0),
+		sanitizeDegreesDouble(sourceColorHct.hue + 15.0), 8.0),
 	neutralVariantPalette = TonalPalette.fromHueAndChroma(
-		sanitizeDegreesDouble(sourceColorHct.getHue() + 15.0), 12.0)) {
+		sanitizeDegreesDouble(sourceColorHct.hue + 15.0), 12.0)) {
 	companion object {
 		// NOMUTANTS--arbitrary increments/decrements, correctly, still passes tests.
 		private val HUES = doubleArrayOf(0.0, 21.0, 51.0, 121.0, 151.0, 191.0, 271.0, 321.0, 360.0)

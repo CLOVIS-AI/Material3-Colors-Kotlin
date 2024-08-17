@@ -45,7 +45,7 @@ class TonalPalette private constructor(
 	fun tone(tone: Int): Color {
 		var color = cache[tone]
 		if (color == null) {
-			color = Hct.from(this.hue, this.chroma, tone.toDouble()).toColor()
+			color = Hct(this.hue, this.chroma, tone.toDouble()).argb
 			cache[tone] = color
 		}
 		return color
@@ -53,7 +53,7 @@ class TonalPalette private constructor(
 
 	/** Given a tone, use hue and chroma of palette to create a color, and return it as HCT.  */
 	fun getHct(tone: Double): Hct {
-		return Hct.from(this.hue, this.chroma, tone)
+		return Hct(this.hue, this.chroma, tone)
 	}
 
 	/** Key color is a color that represents the hue and chroma of a tonal palette.  */
@@ -92,7 +92,7 @@ class TonalPalette private constructor(
 						upperTone = midTone
 					} else {
 						if (lowerTone == midTone) {
-							return Hct.from(this.hue, this.requestedChroma, lowerTone.toDouble())
+							return Hct(this.hue, this.requestedChroma, lowerTone.toDouble())
 						}
 						lowerTone = midTone
 					}
@@ -108,13 +108,13 @@ class TonalPalette private constructor(
 				}
 			}
 
-			return Hct.from(this.hue, this.requestedChroma, lowerTone.toDouble())
+			return Hct(this.hue, this.requestedChroma, lowerTone.toDouble())
 		}
 
 		// Find the maximum chroma for a given tone
 		fun maxChroma(tone: Int): Double {
 			if (chromaCache[tone] == null) {
-				val newChroma = Hct.from(hue, MAX_CHROMA_VALUE, tone.toDouble()).getChroma()
+				val newChroma = Hct(hue, MAX_CHROMA_VALUE, tone.toDouble()).chroma
 				if (newChroma != null) {
 					chromaCache[tone] = newChroma
 				}
@@ -135,7 +135,7 @@ class TonalPalette private constructor(
 		 * @return Tones matching that color's hue and chroma.
 		 */
 		fun fromInt(argb: Int): TonalPalette {
-			return fromHct(Hct.fromInt(argb))
+			return fromHct(Hct(Color(argb)))
 		}
 
 		/**
@@ -145,7 +145,7 @@ class TonalPalette private constructor(
 		 * @return Tones matching that color's hue and chroma.
 		 */
 		fun fromHct(hct: Hct): TonalPalette {
-			return TonalPalette(hct.getHue(), hct.getChroma(), hct)
+			return TonalPalette(hct.hue, hct.chroma, hct)
 		}
 
 		/**

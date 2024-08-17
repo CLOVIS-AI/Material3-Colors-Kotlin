@@ -27,8 +27,8 @@ class SchemeNeutral(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Double)
 	variant = Variant.NEUTRAL,
 	isDark = isDark,
 	contrastLevel = contrastLevel,
-	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 12.0),
-	secondaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 8.0),
-	tertiaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16.0),
-	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 2.0),
-	neutralVariantPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 2.0))
+	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 12.0),
+	secondaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 8.0),
+	tertiaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 16.0),
+	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 2.0),
+	neutralVariantPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 2.0))

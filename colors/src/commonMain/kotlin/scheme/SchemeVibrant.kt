@@ -27,13 +27,13 @@ class SchemeVibrant(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Double)
 	variant = Variant.VIBRANT,
 	isDark = isDark,
 	contrastLevel = contrastLevel,
-	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 200.0),
+	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 200.0),
 	secondaryPalette = TonalPalette.fromHueAndChroma(
 		getRotatedHue(sourceColorHct, HUES, SECONDARY_ROTATIONS), 24.0),
 	tertiaryPalette = TonalPalette.fromHueAndChroma(
 		getRotatedHue(sourceColorHct, HUES, TERTIARY_ROTATIONS), 32.0),
-	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 10.0),
-	neutralVariantPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 12.0)) {
+	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 10.0),
+	neutralVariantPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 12.0)) {
 	companion object {
 		private val HUES = doubleArrayOf(0.0, 41.0, 61.0, 101.0, 131.0, 181.0, 251.0, 301.0, 360.0)
 		private val SECONDARY_ROTATIONS = doubleArrayOf(18.0, 15.0, 10.0, 12.0, 15.0, 18.0, 15.0, 12.0, 12.0)

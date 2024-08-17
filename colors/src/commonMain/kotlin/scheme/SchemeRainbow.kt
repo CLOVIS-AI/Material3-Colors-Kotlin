@@ -28,9 +28,9 @@ class SchemeRainbow(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Double)
 	variant = Variant.RAINBOW,
 	isDark = isDark,
 	contrastLevel = contrastLevel,
-	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 48.0),
-	secondaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16.0),
+	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 48.0),
+	secondaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 16.0),
 	tertiaryPalette = TonalPalette.fromHueAndChroma(
-		sanitizeDegreesDouble(sourceColorHct.getHue() + 60.0), 24.0),
-	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0),
-	neutralVariantPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 0.0))
+		sanitizeDegreesDouble(sourceColorHct.hue + 60.0), 24.0),
+	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
+	neutralVariantPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0))

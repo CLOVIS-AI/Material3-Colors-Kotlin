@@ -23,15 +23,15 @@ import opensavvy.prepared.runner.kotest.PreparedSpec
 class TemperatureCacheTest : PreparedSpec({
 	suite("Complement") {
 		val colors = listOf(
-			Color.BLACK to Hct.from(0.0, 0.0, 0.0),
-			Color.WHITE to Hct.from(209.0, 2.0, 100.0),
-			Color.RED to Hct.from(265.0170142303846, 69.66359963486161, 53.1613744829945),
-			Color.fromRgb(126, 208, 98) to Hct.from(6.861709070925022, 39.34080922281131, 76.31165352750943)
+			Color.BLACK to Hct(0.0, 0.0, 0.0),
+			Color.WHITE to Hct(209.0, 2.0, 100.0),
+			Color.RED to Hct(265.0170142303846, 69.66359963486161, 53.1613744829945),
+			Color.fromRgb(126, 208, 98) to Hct(6.861709070925022, 39.34080922281131, 76.31165352750943)
 		)
 
 		for ((input, expected) in colors) {
-			test("The complement of $input should be ${expected.toColor()}") {
-				check(TemperatureCache(Hct.fromColor(input)).complement == expected)
+			test("The complement of $input should be ${expected.argb}") {
+				check(TemperatureCache(Hct(input)).complement == expected)
 			}
 		}
 	}

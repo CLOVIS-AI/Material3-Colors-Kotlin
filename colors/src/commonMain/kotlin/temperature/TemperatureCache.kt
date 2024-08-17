@@ -59,18 +59,18 @@ class TemperatureCache(
 				return precomputed
 			}
 
-			val coldestHue: Double = coldest.getHue()
+			val coldestHue: Double = coldest.hue
 			val coldestTemp = tempsByHct!![coldest]!!
 
-			val warmestHue: Double = warmest.getHue()
+			val warmestHue: Double = warmest.hue
 			val warmestTemp = tempsByHct!![warmest]!!
 			val range = warmestTemp - coldestTemp
-			val startHueIsColdestToWarmest = isBetween(input.getHue(), coldestHue, warmestHue)
+			val startHueIsColdestToWarmest = isBetween(input.hue, coldestHue, warmestHue)
 			val startHue = if (startHueIsColdestToWarmest) warmestHue else coldestHue
 			val endHue = if (startHueIsColdestToWarmest) coldestHue else warmestHue
 			val directionOfRotation = 1.0
 			var smallestError = 1000.0
-			var answer: Hct = hctsByHue[input.getHue().roundToInt()]
+			var answer: Hct = hctsByHue[input.hue.roundToInt()]
 
 			val complementRelativeTemp = (1.0 - getRelativeTemperature(input))
 			// Find the color in the other section, closest to the inverse percentile
@@ -121,7 +121,7 @@ class TemperatureCache(
 	 */
 	fun getAnalogousColors(count: Int, divisions: Int): List<Hct> {
 		// The starting hue is the hue of the input color.
-		val startHue = input.getHue().roundToInt()
+		val startHue = input.hue.roundToInt()
 		val startHct: Hct = hctsByHue[startHue]
 		var lastTemp = getRelativeTemperature(startHct)
 
@@ -243,7 +243,7 @@ class TemperatureCache(
 			val hcts: MutableList<Hct> = ArrayList()
 			var hue = 0.0
 			while (hue <= 360.0) {
-				val colorAtHue: Hct = Hct.from(hue, input.getChroma(), input.getTone())
+				val colorAtHue: Hct = Hct(hue, input.chroma, input.tone)
 				hcts.add(colorAtHue)
 				hue += 1.0
 			}
@@ -311,7 +311,7 @@ class TemperatureCache(
 		 * - Upper bound: 8.61. Chroma is infinite. Assuming max of Lab chroma 130.
 		 */
 		fun rawTemperature(color: Hct): Double {
-			val lab = color.toColor().toLab()
+			val lab = color.argb.toLab()
 			val hue = sanitizeDegreesDouble(atan2(lab[2], lab[1]).toDegrees())
 			val chroma = hypot(lab[1], lab[2])
 			return (-0.5
