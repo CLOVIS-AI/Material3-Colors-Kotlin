@@ -172,10 +172,10 @@ class TemperatureCache(
 		for (i in 1 until (ccwCount + 1)) {
 			var index = 0 - i
 			while (index < 0) {
-				index = allColors.size + index
+				index += allColors.size
 			}
 			if (index >= allColors.size) {
-				index = index % allColors.size
+				index %= allColors.size
 			}
 			answers.add(0, allColors[index])
 		}
@@ -184,10 +184,10 @@ class TemperatureCache(
 		for (i in 1 until (cwCount + 1)) {
 			var index = i
 			while (index < 0) {
-				index = allColors.size + index
+				index += allColors.size
 			}
 			if (index >= allColors.size) {
-				index = index % allColors.size
+				index %= allColors.size
 			}
 			answers.add(allColors[index])
 		}
@@ -226,7 +226,7 @@ class TemperatureCache(
 		val hcts = ArrayList<Hct>()
 		var hue = 0.0
 		while (hue <= 360.0) {
-			val colorAtHue: Hct = Hct(hue, input.chroma, input.tone)
+			val colorAtHue = Hct(hue, input.chroma, input.tone)
 			hcts.add(colorAtHue)
 			hue += 1.0
 		}
@@ -296,7 +296,7 @@ class TemperatureCache(
 		/** Determines if an angle is between two other angles, rotating clockwise.  */
 		private fun isBetween(angle: Double, a: Double, b: Double): Boolean {
 			if (a < b) {
-				return a <= angle && angle <= b
+				return angle in a..b
 			}
 			return a <= angle || angle <= b
 		}

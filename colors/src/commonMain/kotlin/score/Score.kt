@@ -87,7 +87,7 @@ object Score {
 
 		// Scores each HCT color based on usage and chroma, while optionally
 		// filtering out values that do not have enough chroma or usage.
-		val scoredHcts: MutableList<ScoredHCT> = ArrayList<ScoredHCT>()
+		val scoredHcts = ArrayList<ScoredHCT>()
 		for (hct in colorsHct) {
 			val hue = sanitizeDegreesInt(hct.hue.roundToInt())
 			val proportion = hueExcitedProportions[hue]
@@ -109,7 +109,7 @@ object Score {
 		// the colors with the largest distribution of hues possible. Starting at
 		// 90 degrees(maximum difference for 4 colors) then decreasing down to a
 		// 15 degree minimum.
-		val chosenColors: MutableList<Hct> = ArrayList<Hct>()
+		val chosenColors = ArrayList<Hct>()
 		for (differenceDegrees in 90 downTo 15) {
 			chosenColors.clear()
 			for (entry in scoredHcts) {

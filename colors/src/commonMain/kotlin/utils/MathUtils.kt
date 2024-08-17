@@ -80,9 +80,9 @@ internal fun clampDouble(min: Double, max: Double, input: Double): Double {
  */
 internal fun sanitizeDegreesInt(degrees: Int): Int {
 	var degrees = degrees
-	degrees = degrees % 360
+	degrees %= 360
 	if (degrees < 0) {
-		degrees = degrees + 360
+		degrees += 360
 	}
 	return degrees
 }
@@ -94,9 +94,9 @@ internal fun sanitizeDegreesInt(degrees: Int): Int {
  */
 internal fun sanitizeDegreesDouble(degrees: Double): Double {
 	var degrees = degrees
-	degrees = degrees % 360.0
+	degrees %= 360.0
 	if (degrees < 0) {
-		degrees = degrees + 360.0
+		degrees += 360.0
 	}
 	return degrees
 }

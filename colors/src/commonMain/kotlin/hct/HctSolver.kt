@@ -403,7 +403,7 @@ object HctSolver {
 	}
 
 	fun isBounded(x: Double): Boolean {
-		return 0.0 <= x && x <= 100.0
+		return x in 0.0..100.0
 	}
 
 	/**
@@ -422,29 +422,23 @@ object HctSolver {
 		val coordA = if (n % 4 <= 1) 0.0 else 100.0
 		val coordB = if (n % 2 == 0) 0.0 else 100.0
 		if (n < 4) {
-			val g = coordA
-			val b = coordB
-			val r = (y - g * kG - b * kB) / kR
+			val r = (y - coordA * kG - coordB * kB) / kR
 			return if (isBounded(r)) {
-				doubleArrayOf(r, g, b)
+				doubleArrayOf(r, coordA, coordB)
 			} else {
 				doubleArrayOf(-1.0, -1.0, -1.0)
 			}
 		} else if (n < 8) {
-			val b = coordA
-			val r = coordB
-			val g = (y - r * kR - b * kB) / kG
+			val g = (y - coordB * kR - coordA * kB) / kG
 			return if (isBounded(g)) {
-				doubleArrayOf(r, g, b)
+				doubleArrayOf(coordB, g, coordA)
 			} else {
 				doubleArrayOf(-1.0, -1.0, -1.0)
 			}
 		} else {
-			val r = coordA
-			val g = coordB
-			val b = (y - r * kR - g * kG) / kB
+			val b = (y - coordA * kR - coordB * kG) / kB
 			return if (isBounded(b)) {
-				doubleArrayOf(r, g, b)
+				doubleArrayOf(coordA, coordB, b)
 			} else {
 				doubleArrayOf(-1.0, -1.0, -1.0)
 			}
@@ -624,7 +618,7 @@ object HctSolver {
 			}
 			// Iterates with Newton method,
 			// Using 2 * fn(j) / j as the approximation of fn'(j)
-			j = j - (fnj - y) * j / (2 * fnj)
+			j -= (fnj - y) * j / (2 * fnj)
 		}
 		return Color.BLACK
 	}

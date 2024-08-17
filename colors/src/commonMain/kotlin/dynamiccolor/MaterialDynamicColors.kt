@@ -70,15 +70,15 @@ class MaterialDynamicColors {
 	fun neutralPaletteKeyColor(): DynamicColor {
 		return DynamicColor.fromPalette(
 			name = "neutral_palette_key_color",
-			palette = { it -> it.neutralPalette },
-			tone = { it -> it.neutralPalette.keyColor.tone })
+			palette = { it.neutralPalette },
+			tone = { it.neutralPalette.keyColor.tone })
 	}
 
 	fun neutralVariantPaletteKeyColor(): DynamicColor {
 		return DynamicColor.fromPalette(
 			name = "neutral_variant_palette_key_color",
-			palette = { it -> it.neutralVariantPalette },
-			tone = { it -> it.neutralVariantPalette.keyColor.tone })
+			palette = { it.neutralVariantPalette },
+			tone = { it.neutralVariantPalette.keyColor.tone })
 	}
 
 	fun background(): DynamicColor {
@@ -297,8 +297,8 @@ class MaterialDynamicColors {
 	fun outlineVariant(): DynamicColor {
 		return DynamicColor(
 			name = "outline_variant",
-			palette = { it -> it.neutralVariantPalette },
-			tone = { it -> if (it.isDark) 30.0 else 80.0 },
+			palette = { it.neutralVariantPalette },
+			tone = { if (it.isDark) 30.0 else 80.0 },
 			isBackground = false,
 			background = { s: DynamicScheme -> this.highestSurface(s) },
 			secondBackground = null,

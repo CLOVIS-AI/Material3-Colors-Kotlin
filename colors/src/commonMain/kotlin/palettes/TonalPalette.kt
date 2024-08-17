@@ -60,7 +60,7 @@ class TonalPalette private constructor(
 	private class KeyColor
 	/** Key color is a color that represents the hue and chroma of a tonal palette  */(private val hue: Double, private val requestedChroma: Double) {
 		// Cache that maps tone to max chroma to avoid duplicated HCT calculation.
-		private val chromaCache: MutableMap<Int, Double> = HashMap<Int, Double>()
+		private val chromaCache = HashMap<Int, Double>()
 
 		/**
 		 * Creates a key color from a [hue] and a [chroma]. The key color is the first tone, starting

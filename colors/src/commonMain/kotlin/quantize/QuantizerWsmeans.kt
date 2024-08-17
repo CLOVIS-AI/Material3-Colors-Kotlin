@@ -58,10 +58,10 @@ object QuantizerWsmeans {
 		// Uses a seeded random number generator to ensure consistent results.
 		val random = Random(0x42688)
 
-		val pixelToCount: MutableMap<Int, Int> = LinkedHashMap<Int, Int>()
+		val pixelToCount = LinkedHashMap<Int, Int>()
 		val points = arrayOfNulls<DoubleArray>(inputPixels.size)
 		val pixels = IntArray(inputPixels.size)
-		val pointProvider: PointProvider = PointProviderLab()
+		val pointProvider = PointProviderLab()
 
 		var pointCount = 0
 		for (i in inputPixels.indices) {
@@ -86,7 +86,7 @@ object QuantizerWsmeans {
 		}
 
 		var clusterCount: Int = min(maxColors, pointCount)
-		if (startingClusters.size != 0) {
+		if (startingClusters.isNotEmpty()) {
 			clusterCount = min(clusterCount, startingClusters.size)
 		}
 
@@ -195,7 +195,7 @@ object QuantizerWsmeans {
 			}
 		}
 
-		val argbToPopulation: MutableMap<Int, Int> = LinkedHashMap<Int, Int>()
+		val argbToPopulation = LinkedHashMap<Int, Int>()
 		for (i in 0 until clusterCount) {
 			val count = pixelCountSums[i]
 			if (count == 0) {
