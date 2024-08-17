@@ -40,62 +40,54 @@ class TemperatureCache(
 	val input: Hct
 ) {
 
-	private var precomputedComplement: Hct? = null
+	/**
+	 * A color that complements the input color aesthetically.
+	 *
+	 * In art, this is usually described as being across the color wheel.
+	 * History of this shows intent as a color that is just as cool-warm as the [input] color is warm-cool.
+	 */
+	val complement by lazy {
+		val coldestHue: Double = coldest.hue
+		val coldestTemp = tempsByHct!![coldest]!!
+
+		val warmestHue: Double = warmest.hue
+		val warmestTemp = tempsByHct!![warmest]!!
+		val range = warmestTemp - coldestTemp
+		val startHueIsColdestToWarmest = isBetween(input.hue, coldestHue, warmestHue)
+		val startHue = if (startHueIsColdestToWarmest) warmestHue else coldestHue
+		val endHue = if (startHueIsColdestToWarmest) coldestHue else warmestHue
+		val directionOfRotation = 1.0
+		var smallestError = 1000.0
+		var answer: Hct = hctsByHue[input.hue.roundToInt()]
+
+		val complementRelativeTemp = (1.0 - getRelativeTemperature(input))
+		// Find the color in the other section, closest to the inverse percentile
+		// of the input color. This is the complement.
+		var hueAddend = 0.0
+		while (hueAddend <= 360.0) {
+			val hue = sanitizeDegreesDouble(
+				startHue + directionOfRotation * hueAddend)
+			if (!isBetween(hue, startHue, endHue)) {
+				hueAddend += 1.0
+				continue
+			}
+			val possibleAnswer: Hct = hctsByHue[hue.roundToInt()]
+			val relativeTemp =
+				(tempsByHct!![possibleAnswer]!! - coldestTemp) / range
+			val error = abs(complementRelativeTemp - relativeTemp)
+			if (error < smallestError) {
+				smallestError = error
+				answer = possibleAnswer
+			}
+			hueAddend += 1.0
+		}
+
+		answer
+	}
+
 	private var precomputedHctsByTemp: List<Hct>? = null
 	private var precomputedHctsByHue: List<Hct>? = null
 	private var precomputedTempsByHct: Map<Hct, Double>? = null
-
-	val complement: Hct
-		/**
-		 * A color that complements the input color aesthetically.
-		 *
-		 *
-		 * In art, this is usually described as being across the color wheel. History of this shows
-		 * intent as a color that is just as cool-warm as the input color is warm-cool.
-		 */
-		get() {
-			val precomputed = precomputedComplement
-			if (precomputed != null) {
-				return precomputed
-			}
-
-			val coldestHue: Double = coldest.hue
-			val coldestTemp = tempsByHct!![coldest]!!
-
-			val warmestHue: Double = warmest.hue
-			val warmestTemp = tempsByHct!![warmest]!!
-			val range = warmestTemp - coldestTemp
-			val startHueIsColdestToWarmest = isBetween(input.hue, coldestHue, warmestHue)
-			val startHue = if (startHueIsColdestToWarmest) warmestHue else coldestHue
-			val endHue = if (startHueIsColdestToWarmest) coldestHue else warmestHue
-			val directionOfRotation = 1.0
-			var smallestError = 1000.0
-			var answer: Hct = hctsByHue[input.hue.roundToInt()]
-
-			val complementRelativeTemp = (1.0 - getRelativeTemperature(input))
-			// Find the color in the other section, closest to the inverse percentile
-			// of the input color. This is the complement.
-			var hueAddend = 0.0
-			while (hueAddend <= 360.0) {
-				val hue = sanitizeDegreesDouble(
-					startHue + directionOfRotation * hueAddend)
-				if (!isBetween(hue, startHue, endHue)) {
-					hueAddend += 1.0
-					continue
-				}
-				val possibleAnswer: Hct = hctsByHue[hue.roundToInt()]
-				val relativeTemp =
-					(tempsByHct!![possibleAnswer]!! - coldestTemp) / range
-				val error = abs(complementRelativeTemp - relativeTemp)
-				if (error < smallestError) {
-					smallestError = error
-					answer = possibleAnswer
-				}
-				hueAddend += 1.0
-			}
-			return answer
-				.also { precomputedComplement = it }
-		}
 
 	val analogousColors: List<Hct>
 		/**
