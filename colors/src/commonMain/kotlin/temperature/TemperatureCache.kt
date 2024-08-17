@@ -205,7 +205,7 @@ class TemperatureCache(
 	 * @param hct HCT to find the relative temperature of.
 	 * @return Value on a scale from 0 to 1.
 	 */
-	fun getRelativeTemperature(hct: Hct): Double {
+	private fun getRelativeTemperature(hct: Hct): Double {
 		val range = tempsByHct!![warmest]!! - tempsByHct!![coldest]!!
 		val differenceFromColdest =
 			tempsByHct!![hct]!! - tempsByHct!![coldest]!!
