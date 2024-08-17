@@ -48,10 +48,10 @@ class TemperatureCache(
 	 */
 	val complement by lazy {
 		val coldestHue: Double = coldest.hue
-		val coldestTemp = tempsByHct!![coldest]!!
+		val coldestTemp = tempsByHct[coldest]!!
 
 		val warmestHue: Double = warmest.hue
-		val warmestTemp = tempsByHct!![warmest]!!
+		val warmestTemp = tempsByHct[warmest]!!
 		val range = warmestTemp - coldestTemp
 		val startHueIsColdestToWarmest = isBetween(input.hue, coldestHue, warmestHue)
 		val startHue = if (startHueIsColdestToWarmest) warmestHue else coldestHue
@@ -73,7 +73,7 @@ class TemperatureCache(
 			}
 			val possibleAnswer: Hct = hctsByHue[hue.roundToInt()]
 			val relativeTemp =
-				(tempsByHct!![possibleAnswer]!! - coldestTemp) / range
+				(tempsByHct[possibleAnswer]!! - coldestTemp) / range
 			val error = abs(complementRelativeTemp - relativeTemp)
 			if (error < smallestError) {
 				smallestError = error
@@ -84,10 +84,6 @@ class TemperatureCache(
 
 		answer
 	}
-
-	private var precomputedHctsByTemp: List<Hct>? = null
-	private var precomputedHctsByHue: List<Hct>? = null
-	private var precomputedTempsByHct: Map<Hct, Double>? = null
 
 	val analogousColors: List<Hct>
 		/**
@@ -206,9 +202,9 @@ class TemperatureCache(
 	 * @return Value on a scale from 0 to 1.
 	 */
 	private fun getRelativeTemperature(hct: Hct): Double {
-		val range = tempsByHct!![warmest]!! - tempsByHct!![coldest]!!
+		val range = tempsByHct[warmest]!! - tempsByHct[coldest]!!
 		val differenceFromColdest =
-			tempsByHct!![hct]!! - tempsByHct!![coldest]!!
+			tempsByHct[hct]!! - tempsByHct[coldest]!!
 		// Handle when there's no difference in temperature between warmest and
 		// coldest: for example, at T100, only one color is available, white.
 		if (range == 0.0) {
@@ -221,62 +217,48 @@ class TemperatureCache(
 		/** Coldest color with same chroma and tone as input.  */
 		get() = hctsByTemp[0]
 
-	private val hctsByHue: List<Hct>
-		/**
-		 * HCTs for all colors with the same chroma/tone as the input.
-		 *
-		 *
-		 * Sorted by hue, ex. index 0 is hue 0.
-		 */
-		get() {
-			val precomputed = precomputedHctsByHue
-			if (precomputed != null)
-				return precomputed
-			val hcts: MutableList<Hct> = ArrayList()
-			var hue = 0.0
-			while (hue <= 360.0) {
-				val colorAtHue: Hct = Hct(hue, input.chroma, input.tone)
-				hcts.add(colorAtHue)
-				hue += 1.0
-			}
-			return hcts.toList()
-				.also { precomputedHctsByHue = it }
+	/**
+	 * HCTs for all colors with the same chroma/tone as the input.
+	 *
+	 * Sorted by hue, ex. index 0 is hue 0.
+	 */
+	private val hctsByHue: List<Hct> by lazy {
+		val hcts = ArrayList<Hct>()
+		var hue = 0.0
+		while (hue <= 360.0) {
+			val colorAtHue: Hct = Hct(hue, input.chroma, input.tone)
+			hcts.add(colorAtHue)
+			hue += 1.0
+		}
+		hcts
+	}
+
+	/**
+	 * HCTs for all colors with the same chroma/tone as the input.
+	 *
+	 * Sorted from coldest first to warmest last.
+	 */
+	private val hctsByTemp: List<Hct> by lazy {
+		val hcts = ArrayList(hctsByHue)
+		hcts.add(input)
+		hcts.sortBy { tempsByHct[it] }
+		hcts
+	}
+
+	/**
+	 * Keys of HCTs in [hctsByTemp], values of raw temperature.
+	 */
+	private val tempsByHct: Map<Hct, Double> by lazy {
+		val allHcts = ArrayList(hctsByHue)
+		allHcts.add(input)
+
+		val temperaturesByHct: MutableMap<Hct, Double> = HashMap()
+		for (hct in allHcts) {
+			temperaturesByHct[hct] = rawTemperature(hct)
 		}
 
-	private val hctsByTemp: List<Hct>
-		/**
-		 * HCTs for all colors with the same chroma/tone as the input.
-		 *
-		 *
-		 * Sorted from coldest first to warmest last.
-		 */
-		get() {
-			val precomputed = precomputedHctsByTemp
-			if (precomputed != null)
-				return precomputed
-			val hcts: MutableList<Hct> = ArrayList(hctsByHue)
-			hcts.add(input)
-			hcts.sortBy { tempsByHct!![it] }
-			return hcts.also { precomputedHctsByTemp = it }
-		}
-
-	private val tempsByHct: Map<Hct, Double>?
-		/** Keys of HCTs in getHctsByTemp, values of raw temperature.  */
-		get() {
-			val precomputed = precomputedTempsByHct
-			if (precomputed != null)
-				return precomputed
-			val allHcts: MutableList<Hct> = ArrayList(hctsByHue)
-			allHcts.add(input)
-
-			val temperaturesByHct: MutableMap<Hct, Double> = HashMap()
-			for (hct in allHcts) {
-				temperaturesByHct[hct] = rawTemperature(hct)
-			}
-
-			precomputedTempsByHct = temperaturesByHct
-			return precomputedTempsByHct
-		}
+		temperaturesByHct
+	}
 
 	private val warmest: Hct
 		/** Warmest color with same chroma and tone as input.  */
