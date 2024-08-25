@@ -28,9 +28,9 @@ class SchemeTonalSpot(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Doubl
 	variant = Variant.TONAL_SPOT,
 	isDark = isDark,
 	contrastLevel = contrastLevel,
-	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 36.0),
-	secondaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 16.0),
+	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 36.0),
+	secondaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 16.0),
 	tertiaryPalette = TonalPalette.fromHueAndChroma(
-		sanitizeDegreesDouble(sourceColorHct.getHue() + 60.0), 24.0),
-	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 6.0),
-	neutralVariantPalette = TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 8.0))
+		sanitizeDegreesDouble(sourceColorHct.hue + 60.0), 24.0),
+	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 6.0),
+	neutralVariantPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 8.0))

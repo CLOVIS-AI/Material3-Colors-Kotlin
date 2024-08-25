@@ -165,9 +165,9 @@ class Cam16 private constructor(
 		val bCBase = max(0.0, (27.13 * abs(bA)) / (400.0 - abs(bA)))
 		val bC: Double =
 			sign(bA) * (100.0 / viewingConditions.fl) * bCBase.pow(1.0 / 0.42)
-		val rF: Double = rC / viewingConditions.rgbD.get(0)
-		val gF: Double = gC / viewingConditions.rgbD.get(1)
-		val bF: Double = bC / viewingConditions.rgbD.get(2)
+		val rF: Double = rC / viewingConditions.rgbD[0]
+		val gF: Double = gC / viewingConditions.rgbD[1]
+		val bF: Double = bC / viewingConditions.rgbD[2]
 
 		val matrix = CAM16RGB_TO_XYZ
 		val x = (rF * matrix[0][0]) + (gF * matrix[0][1]) + (bF * matrix[0][2])
@@ -247,9 +247,9 @@ class Cam16 private constructor(
 			val bT = (x * matrix[2][0]) + (y * matrix[2][1]) + (z * matrix[2][2])
 
 			// Discount illuminant
-			val rD: Double = viewingConditions.rgbD.get(0) * rT
-			val gD: Double = viewingConditions.rgbD.get(1) * gT
-			val bD: Double = viewingConditions.rgbD.get(2) * bT
+			val rD: Double = viewingConditions.rgbD[0] * rT
+			val gD: Double = viewingConditions.rgbD[1] * gT
+			val bD: Double = viewingConditions.rgbD[2] * bT
 
 			// Chromatic adaptation
 			val rAF: Double = (viewingConditions.fl * abs(rD) / 100.0).pow(0.42)

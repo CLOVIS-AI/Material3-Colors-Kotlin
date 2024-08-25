@@ -26,8 +26,10 @@ package opensavvy.material3.colors.dynamiccolor
  * relationship or a contrast guarantee.
  */
 class ToneDeltaPair(
-	roleA: DynamicColor,
-	roleB: DynamicColor,
+	/** The first role in a pair.  */
+	val roleA: DynamicColor,
+	/** The second role in a pair.  */
+	val roleB: DynamicColor,
 	/** Required difference between tones. Absolute value, negative values have undefined behavior.  */
 	val delta: Double,
 	/** The relative relation between tones of roleA and roleB, as described above.  */
@@ -37,18 +39,4 @@ class ToneDeltaPair(
 	 * necessary for certain cases where one role has two backgrounds.
 	 */
 	val stayTogether: Boolean,
-) {
-	/** The first role in a pair.  */
-	private val roleA: DynamicColor = roleA
-
-	/** The second role in a pair.  */
-	private val roleB: DynamicColor = roleB
-
-	fun getRoleA(): DynamicColor {
-		return roleA
-	}
-
-	fun getRoleB(): DynamicColor {
-		return roleB
-	}
-}
+)

@@ -38,7 +38,7 @@ object QuantizerCelebi {
 	 * image that correspond to the color in the quantized image.
 	 */
 	fun quantize(pixels: IntArray, maxColors: Int): Map<Int, Int> {
-		val wu: QuantizerWu = QuantizerWu()
+		val wu = QuantizerWu()
 		val wuResult: QuantizerResult = wu.quantize(pixels, maxColors)
 
 		val wuClustersAsObjects: Set<Int> = wuResult.colorToCount.keys

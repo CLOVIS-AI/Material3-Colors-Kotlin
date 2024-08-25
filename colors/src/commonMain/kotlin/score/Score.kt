@@ -68,9 +68,9 @@ object Score {
 		val huePopulation = IntArray(360)
 		var populationSum = 0.0
 		for ((key, value) in colorsToPopulation) {
-			val hct = Hct.fromInt(key!!)
+			val hct = Hct(Color(key!!))
 			colorsHct.add(hct)
-			val hue = floor(hct.getHue()).toInt()
+			val hue = floor(hct.hue).toInt()
 			huePopulation[hue] += value
 			populationSum += value.toDouble()
 		}
@@ -87,18 +87,18 @@ object Score {
 
 		// Scores each HCT color based on usage and chroma, while optionally
 		// filtering out values that do not have enough chroma or usage.
-		val scoredHcts: MutableList<ScoredHCT> = ArrayList<ScoredHCT>()
+		val scoredHcts = ArrayList<ScoredHCT>()
 		for (hct in colorsHct) {
-			val hue = sanitizeDegreesInt(hct.getHue().roundToInt())
+			val hue = sanitizeDegreesInt(hct.hue.roundToInt())
 			val proportion = hueExcitedProportions[hue]
-			if (filter && (hct.getChroma() < CUTOFF_CHROMA || proportion <= CUTOFF_EXCITED_PROPORTION)) {
+			if (filter && (hct.chroma < CUTOFF_CHROMA || proportion <= CUTOFF_EXCITED_PROPORTION)) {
 				continue
 			}
 
 			val proportionScore = proportion * 100.0 * WEIGHT_PROPORTION
 			val chromaWeight =
-				if (hct.getChroma() < TARGET_CHROMA) WEIGHT_CHROMA_BELOW else WEIGHT_CHROMA_ABOVE
-			val chromaScore = (hct.getChroma() - TARGET_CHROMA) * chromaWeight
+				if (hct.chroma < TARGET_CHROMA) WEIGHT_CHROMA_BELOW else WEIGHT_CHROMA_ABOVE
+			val chromaScore = (hct.chroma - TARGET_CHROMA) * chromaWeight
 			val score = proportionScore + chromaScore
 			scoredHcts.add(ScoredHCT(hct, score))
 		}
@@ -109,14 +109,14 @@ object Score {
 		// the colors with the largest distribution of hues possible. Starting at
 		// 90 degrees(maximum difference for 4 colors) then decreasing down to a
 		// 15 degree minimum.
-		val chosenColors: MutableList<Hct> = ArrayList<Hct>()
+		val chosenColors = ArrayList<Hct>()
 		for (differenceDegrees in 90 downTo 15) {
 			chosenColors.clear()
 			for (entry in scoredHcts) {
 				val hct = entry.hct
 				var hasDuplicateHue = false
 				for (chosenHct in chosenColors) {
-					if (differenceDegrees(hct.getHue(), chosenHct.getHue()) < differenceDegrees) {
+					if (differenceDegrees(hct.hue, chosenHct.hue) < differenceDegrees) {
 						hasDuplicateHue = true
 						break
 					}
@@ -137,7 +137,7 @@ object Score {
 			colors.add(Color(fallbackColorArgb))
 		}
 		for (chosenHct in chosenColors) {
-			colors.add(chosenHct.toColor())
+			colors.add(chosenHct.argb)
 		}
 		return colors
 	}

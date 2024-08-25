@@ -123,7 +123,7 @@ class DynamicColor(
 	 * dark mode or light mode, and what the desired contrast level is.
 	 */
 	fun getArgb(scheme: DynamicScheme): Color {
-		val argb = getHct(scheme).toColor()
+		val argb = getHct(scheme).argb
 		if (opacity == null) {
 			return argb
 		}
@@ -167,8 +167,8 @@ class DynamicColor(
 		// Case 1: dual foreground, pair of colors with delta constraint.
 		if (toneDeltaPair != null && background != null) {
 			val toneDeltaPair: ToneDeltaPair = toneDeltaPair.invoke(scheme)
-			val roleA = toneDeltaPair.getRoleA()
-			val roleB = toneDeltaPair.getRoleB()
+			val roleA = toneDeltaPair.roleA
+			val roleB = toneDeltaPair.roleB
 			val delta = toneDeltaPair.delta
 			val polarity = toneDeltaPair.polarity
 			val stayTogether = toneDeltaPair.stayTogether
@@ -311,7 +311,7 @@ class DynamicColor(
 				val darkOption = darker(lower, desiredRatio)
 
 				// Tones suitable for the foreground.
-				val availables: ArrayList<Double> = ArrayList<Double>()
+				val availables = ArrayList<Double>()
 				if (lightOption != -1.0) {
 					availables.add(lightOption)
 				}
@@ -326,7 +326,7 @@ class DynamicColor(
 					return if ((lightOption == -1.0)) 100.0 else lightOption
 				}
 				if (availables.size == 1) {
-					return availables.get(0)
+					return availables[0]
 				}
 				return if ((darkOption == -1.0)) 0.0 else darkOption
 			}
@@ -431,12 +431,12 @@ class DynamicColor(
 		 * @param argb The source color from which to extract the hue and chroma.
 		 */
 		fun fromArgb(name: String, argb: Int): DynamicColor {
-			val hct = Hct.fromInt(argb)
+			val hct = Hct(Color(argb))
 			val palette = TonalPalette.fromInt(argb)
 			return fromPalette(
 				name = name,
 				palette = { palette },
-				tone = { hct.getTone() }
+				tone = { hct.tone }
 			)
 		}
 

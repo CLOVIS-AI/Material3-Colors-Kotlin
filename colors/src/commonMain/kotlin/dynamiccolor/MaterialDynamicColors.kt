@@ -50,35 +50,35 @@ class MaterialDynamicColors {
 		return DynamicColor.fromPalette(
 			name = "primary_palette_key_color",
 			palette = { it.primaryPalette },
-			tone = { it.primaryPalette.keyColor.getTone() })
+			tone = { it.primaryPalette.keyColor.tone })
 	}
 
 	fun secondaryPaletteKeyColor(): DynamicColor {
 		return DynamicColor.fromPalette(
 			name = "secondary_palette_key_color",
 			palette = { it.secondaryPalette },
-			tone = { it.secondaryPalette.keyColor.getTone() })
+			tone = { it.secondaryPalette.keyColor.tone })
 	}
 
 	fun tertiaryPaletteKeyColor(): DynamicColor {
 		return DynamicColor.fromPalette(
 			name = "tertiary_palette_key_color",
 			palette = { it.tertiaryPalette },
-			tone = { it.tertiaryPalette.keyColor.getTone() })
+			tone = { it.tertiaryPalette.keyColor.tone })
 	}
 
 	fun neutralPaletteKeyColor(): DynamicColor {
 		return DynamicColor.fromPalette(
 			name = "neutral_palette_key_color",
-			palette = { it -> it.neutralPalette },
-			tone = { it -> it.neutralPalette.keyColor.getTone() })
+			palette = { it.neutralPalette },
+			tone = { it.neutralPalette.keyColor.tone })
 	}
 
 	fun neutralVariantPaletteKeyColor(): DynamicColor {
 		return DynamicColor.fromPalette(
 			name = "neutral_variant_palette_key_color",
-			palette = { it -> it.neutralVariantPalette },
-			tone = { it -> it.neutralVariantPalette.keyColor.getTone() })
+			palette = { it.neutralVariantPalette },
+			tone = { it.neutralVariantPalette.keyColor.tone })
 	}
 
 	fun background(): DynamicColor {
@@ -297,8 +297,8 @@ class MaterialDynamicColors {
 	fun outlineVariant(): DynamicColor {
 		return DynamicColor(
 			name = "outline_variant",
-			palette = { it -> it.neutralVariantPalette },
-			tone = { it -> if (it.isDark) 30.0 else 80.0 },
+			palette = { it.neutralVariantPalette },
+			tone = { if (it.isDark) 30.0 else 80.0 },
 			isBackground = false,
 			background = { s: DynamicScheme -> this.highestSurface(s) },
 			secondBackground = null,
@@ -382,7 +382,7 @@ class MaterialDynamicColors {
 			palette = { s -> s.primaryPalette },
 			tone = { s ->
 				if (isFidelity(s)) {
-					return@DynamicColor s.sourceColorHct.getTone()
+					return@DynamicColor s.sourceColorHct.tone
 				}
 				if (isMonochrome(s)) {
 					return@DynamicColor if (s.isDark) 85.0 else 25.0
@@ -545,8 +545,8 @@ class MaterialDynamicColors {
 				if (!isFidelity(s)) {
 					return@DynamicColor if (s.isDark) 30.0 else 90.0
 				}
-				val proposedHct: Hct = s.tertiaryPalette.getHct(s.sourceColorHct.getTone())
-				DislikeAnalyzer.fixIfDisliked(proposedHct).getTone()
+				val proposedHct: Hct = s.tertiaryPalette.getHct(s.sourceColorHct.tone)
+				DislikeAnalyzer.fixIfDisliked(proposedHct).tone
 			},
 			isBackground = true,
 			background = { s: DynamicScheme -> this.highestSurface(s) },
@@ -904,25 +904,25 @@ class MaterialDynamicColors {
 		): Double {
 			var answer = tone
 
-			var closestToChroma = Hct.from(hue, chroma, tone)
-			if (closestToChroma.getChroma() < chroma) {
-				var chromaPeak = closestToChroma.getChroma()
-				while (closestToChroma.getChroma() < chroma) {
+			var closestToChroma = Hct(hue, chroma, tone)
+			if (closestToChroma.chroma < chroma) {
+				var chromaPeak = closestToChroma.chroma
+				while (closestToChroma.chroma < chroma) {
 					answer += if (byDecreasingTone) -1.0 else 1.0
-					val potentialSolution = Hct.from(hue, chroma, answer)
-					if (chromaPeak > potentialSolution.getChroma()) {
+					val potentialSolution = Hct(hue, chroma, answer)
+					if (chromaPeak > potentialSolution.chroma) {
 						break
 					}
-					if (abs(potentialSolution.getChroma() - chroma) < 0.4) {
+					if (abs(potentialSolution.chroma - chroma) < 0.4) {
 						break
 					}
 
-					val potentialDelta = abs(potentialSolution.getChroma() - chroma)
-					val currentDelta = abs(closestToChroma.getChroma() - chroma)
+					val potentialDelta = abs(potentialSolution.chroma - chroma)
+					val currentDelta = abs(closestToChroma.chroma - chroma)
 					if (potentialDelta < currentDelta) {
 						closestToChroma = potentialSolution
 					}
-					chromaPeak = max(chromaPeak, potentialSolution.getChroma())
+					chromaPeak = max(chromaPeak, potentialSolution.chroma)
 				}
 			}
 

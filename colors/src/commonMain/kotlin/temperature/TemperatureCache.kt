@@ -40,62 +40,50 @@ class TemperatureCache(
 	val input: Hct
 ) {
 
-	private var precomputedComplement: Hct? = null
-	private var precomputedHctsByTemp: List<Hct>? = null
-	private var precomputedHctsByHue: List<Hct>? = null
-	private var precomputedTempsByHct: Map<Hct, Double>? = null
+	/**
+	 * A color that complements the input color aesthetically.
+	 *
+	 * In art, this is usually described as being across the color wheel.
+	 * History of this shows intent as a color that is just as cool-warm as the [input] color is warm-cool.
+	 */
+	val complement by lazy {
+		val coldestHue: Double = coldest.hue
+		val coldestTemp = tempsByHct[coldest]!!
 
-	val complement: Hct
-		/**
-		 * A color that complements the input color aesthetically.
-		 *
-		 *
-		 * In art, this is usually described as being across the color wheel. History of this shows
-		 * intent as a color that is just as cool-warm as the input color is warm-cool.
-		 */
-		get() {
-			val precomputed = precomputedComplement
-			if (precomputed != null) {
-				return precomputed
-			}
+		val warmestHue: Double = warmest.hue
+		val warmestTemp = tempsByHct[warmest]!!
+		val range = warmestTemp - coldestTemp
+		val startHueIsColdestToWarmest = isBetween(input.hue, coldestHue, warmestHue)
+		val startHue = if (startHueIsColdestToWarmest) warmestHue else coldestHue
+		val endHue = if (startHueIsColdestToWarmest) coldestHue else warmestHue
+		val directionOfRotation = 1.0
+		var smallestError = 1000.0
+		var answer: Hct = hctsByHue[input.hue.roundToInt()]
 
-			val coldestHue: Double = coldest.getHue()
-			val coldestTemp = tempsByHct!![coldest]!!
-
-			val warmestHue: Double = warmest.getHue()
-			val warmestTemp = tempsByHct!![warmest]!!
-			val range = warmestTemp - coldestTemp
-			val startHueIsColdestToWarmest = isBetween(input.getHue(), coldestHue, warmestHue)
-			val startHue = if (startHueIsColdestToWarmest) warmestHue else coldestHue
-			val endHue = if (startHueIsColdestToWarmest) coldestHue else warmestHue
-			val directionOfRotation = 1.0
-			var smallestError = 1000.0
-			var answer: Hct = hctsByHue[input.getHue().roundToInt()]
-
-			val complementRelativeTemp = (1.0 - getRelativeTemperature(input))
-			// Find the color in the other section, closest to the inverse percentile
-			// of the input color. This is the complement.
-			var hueAddend = 0.0
-			while (hueAddend <= 360.0) {
-				val hue = sanitizeDegreesDouble(
-					startHue + directionOfRotation * hueAddend)
-				if (!isBetween(hue, startHue, endHue)) {
-					hueAddend += 1.0
-					continue
-				}
-				val possibleAnswer: Hct = hctsByHue[hue.roundToInt()]
-				val relativeTemp =
-					(tempsByHct!![possibleAnswer]!! - coldestTemp) / range
-				val error = abs(complementRelativeTemp - relativeTemp)
-				if (error < smallestError) {
-					smallestError = error
-					answer = possibleAnswer
-				}
+		val complementRelativeTemp = (1.0 - getRelativeTemperature(input))
+		// Find the color in the other section, closest to the inverse percentile
+		// of the input color. This is the complement.
+		var hueAddend = 0.0
+		while (hueAddend <= 360.0) {
+			val hue = sanitizeDegreesDouble(
+				startHue + directionOfRotation * hueAddend)
+			if (!isBetween(hue, startHue, endHue)) {
 				hueAddend += 1.0
+				continue
 			}
-			return answer
-				.also { precomputedComplement = it }
+			val possibleAnswer: Hct = hctsByHue[hue.roundToInt()]
+			val relativeTemp =
+				(tempsByHct[possibleAnswer]!! - coldestTemp) / range
+			val error = abs(complementRelativeTemp - relativeTemp)
+			if (error < smallestError) {
+				smallestError = error
+				answer = possibleAnswer
+			}
+			hueAddend += 1.0
 		}
+
+		answer
+	}
 
 	val analogousColors: List<Hct>
 		/**
@@ -121,7 +109,7 @@ class TemperatureCache(
 	 */
 	fun getAnalogousColors(count: Int, divisions: Int): List<Hct> {
 		// The starting hue is the hue of the input color.
-		val startHue = input.getHue().roundToInt()
+		val startHue = input.hue.roundToInt()
 		val startHct: Hct = hctsByHue[startHue]
 		var lastTemp = getRelativeTemperature(startHct)
 
@@ -184,10 +172,10 @@ class TemperatureCache(
 		for (i in 1 until (ccwCount + 1)) {
 			var index = 0 - i
 			while (index < 0) {
-				index = allColors.size + index
+				index += allColors.size
 			}
 			if (index >= allColors.size) {
-				index = index % allColors.size
+				index %= allColors.size
 			}
 			answers.add(0, allColors[index])
 		}
@@ -196,10 +184,10 @@ class TemperatureCache(
 		for (i in 1 until (cwCount + 1)) {
 			var index = i
 			while (index < 0) {
-				index = allColors.size + index
+				index += allColors.size
 			}
 			if (index >= allColors.size) {
-				index = index % allColors.size
+				index %= allColors.size
 			}
 			answers.add(allColors[index])
 		}
@@ -213,10 +201,10 @@ class TemperatureCache(
 	 * @param hct HCT to find the relative temperature of.
 	 * @return Value on a scale from 0 to 1.
 	 */
-	fun getRelativeTemperature(hct: Hct): Double {
-		val range = tempsByHct!![warmest]!! - tempsByHct!![coldest]!!
+	private fun getRelativeTemperature(hct: Hct): Double {
+		val range = tempsByHct[warmest]!! - tempsByHct[coldest]!!
 		val differenceFromColdest =
-			tempsByHct!![hct]!! - tempsByHct!![coldest]!!
+			tempsByHct[hct]!! - tempsByHct[coldest]!!
 		// Handle when there's no difference in temperature between warmest and
 		// coldest: for example, at T100, only one color is available, white.
 		if (range == 0.0) {
@@ -229,66 +217,55 @@ class TemperatureCache(
 		/** Coldest color with same chroma and tone as input.  */
 		get() = hctsByTemp[0]
 
-	private val hctsByHue: List<Hct>
-		/**
-		 * HCTs for all colors with the same chroma/tone as the input.
-		 *
-		 *
-		 * Sorted by hue, ex. index 0 is hue 0.
-		 */
-		get() {
-			val precomputed = precomputedHctsByHue
-			if (precomputed != null)
-				return precomputed
-			val hcts: MutableList<Hct> = ArrayList()
-			var hue = 0.0
-			while (hue <= 360.0) {
-				val colorAtHue: Hct = Hct.from(hue, input.getChroma(), input.getTone())
-				hcts.add(colorAtHue)
-				hue += 1.0
-			}
-			return hcts.toList()
-				.also { precomputedHctsByHue = it }
+	/**
+	 * HCTs for all colors with the same chroma/tone as the input.
+	 *
+	 * Sorted by hue, ex. index 0 is hue 0.
+	 */
+	private val hctsByHue: List<Hct> by lazy {
+		val hcts = ArrayList<Hct>()
+		var hue = 0.0
+		while (hue <= 360.0) {
+			val colorAtHue = Hct(hue, input.chroma, input.tone)
+			hcts.add(colorAtHue)
+			hue += 1.0
+		}
+		hcts
+	}
+
+	/**
+	 * HCTs for all colors with the same chroma/tone as the input.
+	 *
+	 * Sorted from coldest first to warmest last.
+	 */
+	private val hctsByTemp: List<Hct> by lazy {
+		val hcts = ArrayList(hctsByHue)
+		hcts.add(input)
+		hcts.sortBy { tempsByHct[it] }
+		hcts
+	}
+
+	/**
+	 * Keys of HCTs in [hctsByTemp], values of raw temperature.
+	 */
+	private val tempsByHct: Map<Hct, Double> by lazy {
+		val allHcts = ArrayList(hctsByHue)
+		allHcts.add(input)
+
+		val temperaturesByHct: MutableMap<Hct, Double> = HashMap()
+		for (hct in allHcts) {
+			temperaturesByHct[hct] = rawTemperature(hct)
 		}
 
-	private val hctsByTemp: List<Hct>
-		/**
-		 * HCTs for all colors with the same chroma/tone as the input.
-		 *
-		 *
-		 * Sorted from coldest first to warmest last.
-		 */
-		get() {
-			val precomputed = precomputedHctsByTemp
-			if (precomputed != null)
-				return precomputed
-			val hcts: MutableList<Hct> = ArrayList(hctsByHue)
-			hcts.add(input)
-			hcts.sortBy { tempsByHct!![it] }
-			return hcts.also { precomputedHctsByTemp = it }
-		}
-
-	private val tempsByHct: Map<Hct, Double>?
-		/** Keys of HCTs in getHctsByTemp, values of raw temperature.  */
-		get() {
-			val precomputed = precomputedTempsByHct
-			if (precomputed != null)
-				return precomputed
-			val allHcts: MutableList<Hct> = ArrayList(hctsByHue)
-			allHcts.add(input)
-
-			val temperaturesByHct: MutableMap<Hct, Double> = HashMap()
-			for (hct in allHcts) {
-				temperaturesByHct[hct] = rawTemperature(hct)
-			}
-
-			precomputedTempsByHct = temperaturesByHct
-			return precomputedTempsByHct
-		}
+		temperaturesByHct
+	}
 
 	private val warmest: Hct
 		/** Warmest color with same chroma and tone as input.  */
 		get() = hctsByTemp[hctsByTemp.size - 1]
+
+	override fun toString(): String =
+		"Temperature cache of $input"
 
 	companion object {
 		/**
@@ -308,7 +285,7 @@ class TemperatureCache(
 		 * - Upper bound: 8.61. Chroma is infinite. Assuming max of Lab chroma 130.
 		 */
 		fun rawTemperature(color: Hct): Double {
-			val lab = color.toColor().toLab()
+			val lab = color.argb.toLab()
 			val hue = sanitizeDegreesDouble(atan2(lab[2], lab[1]).toDegrees())
 			val chroma = hypot(lab[1], lab[2])
 			return (-0.5
@@ -319,7 +296,7 @@ class TemperatureCache(
 		/** Determines if an angle is between two other angles, rotating clockwise.  */
 		private fun isBetween(angle: Double, a: Double, b: Double): Boolean {
 			if (a < b) {
-				return a <= angle && angle <= b
+				return angle in a..b
 			}
 			return a <= angle || angle <= b
 		}

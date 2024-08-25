@@ -16,6 +16,8 @@
 
 package opensavvy.material3.colors.palettes
 
+import opensavvy.material3.colors.dynamiccolor.DynamicScheme
+
 /**
  * Comprises foundational palettes to build a color scheme.
  *

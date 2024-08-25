@@ -36,15 +36,15 @@ object Blend {
 	 * warmer/cooler variant of the design color's hue.
 	 */
 	fun harmonize(designColor: Color, sourceColor: Color): Color {
-		val fromHct = Hct.fromColor(designColor)
-		val toHct = Hct.fromColor(sourceColor)
-		val differenceDegrees = differenceDegrees(fromHct.getHue(), toHct.getHue())
+		val fromHct = Hct(designColor)
+		val toHct = Hct(sourceColor)
+		val differenceDegrees = differenceDegrees(fromHct.hue, toHct.hue)
 		val rotationDegrees = min(differenceDegrees * 0.5, 15.0)
 		val outputHue =
 			sanitizeDegreesDouble(
-				fromHct.getHue()
-					+ rotationDegrees * rotationDirection(fromHct.getHue(), toHct.getHue()))
-		return Hct.from(outputHue, fromHct.getChroma(), fromHct.getTone()).toColor()
+				fromHct.hue
+					+ rotationDegrees * rotationDirection(fromHct.hue, toHct.hue))
+		return Hct(outputHue, fromHct.chroma, fromHct.tone).argb
 	}
 
 	/**
@@ -60,8 +60,8 @@ object Blend {
 		val ucs = cam16Ucs(from, to, amount)
 		val ucsCam = Cam16.fromColor(ucs)
 		val fromCam = Cam16.fromColor(from)
-		val blended = Hct.from(ucsCam.hue, fromCam.chroma, from.toLstar())
-		return blended.toColor()
+		val blended = Hct(ucsCam.hue, fromCam.chroma, from.toLstar())
+		return blended.argb
 	}
 
 	/**
