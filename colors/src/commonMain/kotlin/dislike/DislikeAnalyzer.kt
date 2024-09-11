@@ -20,43 +20,24 @@ import opensavvy.material3.colors.hct.Hct
 import kotlin.math.round
 
 /**
- * Check and/or fix universally disliked colors.
- *
+ * Checks whether a color is universally disliked.
  *
  * Color science studies of color preference indicate universal distaste for dark yellow-greens,
  * and also show this is correlated to distate for biological waste and rotting food.
  *
- *
  * See Palmer and Schloss, 2010 or Schloss and Palmer's Chapter 21 in Handbook of Color
  * Psychology (2015).
+ *
+ * @return `true` if a color is disliked.
  */
-class DislikeAnalyzer private constructor() {
-	init {
-		throw UnsupportedOperationException()
-	}
+fun Hct.isDisliked(): Boolean =
+	round(hue) in 90.0..111.0 &&
+		round(chroma) > 16.0 &&
+		round(tone) < 65.0
 
-	companion object {
-		/**
-		 * Returns true if color is disliked.
-		 *
-		 *
-		 * Disliked is defined as a dark yellow-green that is not neutral.
-		 */
-		fun isDisliked(hct: Hct): Boolean {
-			val huePasses = round(hct.hue) >= 90.0 && round(hct.hue) <= 111.0
-			val chromaPasses: Boolean = round(hct.chroma) > 16.0
-			val tonePasses: Boolean = round(hct.tone) < 65.0
-
-			return huePasses && chromaPasses && tonePasses
-		}
-
-		/** If color is disliked, lighten it to make it likable.  */
-		fun fixIfDisliked(hct: Hct): Hct {
-			if (isDisliked(hct)) {
-				return Hct(hct.hue, hct.chroma, 70.0)
-			}
-
-			return hct
-		}
-	}
-}
+/**
+ * If a color is [disliked][isDisliked], lighten it to make it likable.
+ */
+fun Hct.fixIfDisliked(): Hct =
+	if (isDisliked()) Hct(hue, chroma, 70.0)
+	else this

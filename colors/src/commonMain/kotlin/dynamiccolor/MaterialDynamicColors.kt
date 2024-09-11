@@ -16,7 +16,7 @@
 
 package opensavvy.material3.colors.dynamiccolor
 
-import opensavvy.material3.colors.dislike.DislikeAnalyzer
+import opensavvy.material3.colors.dislike.fixIfDisliked
 import opensavvy.material3.colors.hct.Hct
 import kotlin.math.abs
 import kotlin.math.max
@@ -546,7 +546,7 @@ class MaterialDynamicColors {
 					return@DynamicColor if (s.isDark) 30.0 else 90.0
 				}
 				val proposedHct: Hct = s.tertiaryPalette.getHct(s.sourceColorHct.tone)
-				DislikeAnalyzer.fixIfDisliked(proposedHct).tone
+				proposedHct.fixIfDisliked().tone
 			},
 			isBackground = true,
 			background = { s: DynamicScheme -> this.highestSurface(s) },

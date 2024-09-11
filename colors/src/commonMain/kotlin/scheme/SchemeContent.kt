@@ -16,7 +16,7 @@
 
 package opensavvy.material3.colors.scheme
 
-import opensavvy.material3.colors.dislike.DislikeAnalyzer
+import opensavvy.material3.colors.dislike.fixIfDisliked
 import opensavvy.material3.colors.dynamiccolor.DynamicScheme
 import opensavvy.material3.colors.dynamiccolor.Variant
 import opensavvy.material3.colors.hct.Hct
@@ -48,9 +48,10 @@ class SchemeContent(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Double)
 		sourceColorHct.hue,
 		max(sourceColorHct.chroma - 32.0, sourceColorHct.chroma * 0.5)),
 	tertiaryPalette = TonalPalette.fromHct(
-		DislikeAnalyzer.fixIfDisliked(
-			TemperatureCache(sourceColorHct)
-				.getAnalogousColors( /* count= */3,  /* divisions= */6)[2])),
+		TemperatureCache(sourceColorHct)
+			.getAnalogousColors(3, 6)[2]
+			.fixIfDisliked()
+	),
 	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, sourceColorHct.chroma / 8.0),
 	neutralVariantPalette = TonalPalette.fromHueAndChroma(
 		sourceColorHct.hue, (sourceColorHct.chroma / 8.0) + 4.0))
