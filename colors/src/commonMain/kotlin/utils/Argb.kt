@@ -27,7 +27,7 @@ import kotlin.math.round
  * Conversions to and from other color spaces are available as well.
  */
 @JvmInline
-value class Color(
+value class Argb(
 	/**
 	 * ARGB 32-bit representation of this color.
 	 */
@@ -135,7 +135,7 @@ value class Color(
 	companion object {
 		// region Converters
 
-		fun fromRgb(red: Int, green: Int, blue: Int) = Color(
+		fun fromRgb(red: Int, green: Int, blue: Int) = Argb(
 			argb = (255 shl 24) or ((red and 255) shl 16) or ((green and 255) shl 8) or (blue and 255)
 		)
 
@@ -144,7 +144,7 @@ value class Color(
 		 *
 		 * @param linrgb Must be an array of 3 values (RGB).
 		 */
-		fun fromLinrgb(linrgb: DoubleArray): Color {
+		fun fromLinrgb(linrgb: DoubleArray): Argb {
 			val r = delinearized(linrgb[0])
 			val g = delinearized(linrgb[1])
 			val b = delinearized(linrgb[2])
@@ -154,7 +154,7 @@ value class Color(
 		/**
 		 * Converts this color from the [XYZ color space](https://en.wikipedia.org/wiki/CIE_1931_color_space).
 		 */
-		fun fromXyz(x: Double, y: Double, z: Double): Color {
+		fun fromXyz(x: Double, y: Double, z: Double): Argb {
 			val matrix = XYZ_TO_SRGB
 			val linearR = matrix[0][0] * x + matrix[0][1] * y + matrix[0][2] * z
 			val linearG = matrix[1][0] * x + matrix[1][1] * y + matrix[1][2] * z
@@ -168,7 +168,7 @@ value class Color(
 		/**
 		 * Converts this color from the [Lab color space](https://en.wikipedia.org/wiki/CIELAB_color_space).
 		 */
-		fun fromLab(l: Double, a: Double, b: Double): Color {
+		fun fromLab(l: Double, a: Double, b: Double): Argb {
 			val whitePoint = whitePointD65
 			val fy = (l + 16.0) / 116.0
 			val fx = a / 500.0 + fy
@@ -185,7 +185,7 @@ value class Color(
 		/**
 		 * Converts from an L* value.
 		 */
-		fun fromLstar(lstar: Double): Color {
+		fun fromLstar(lstar: Double): Argb {
 			val y = yFromLstar(lstar)
 			val component = delinearized(y)
 			return fromRgb(component, component, component)

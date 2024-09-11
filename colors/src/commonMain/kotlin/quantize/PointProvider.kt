@@ -16,24 +16,24 @@
 
 package opensavvy.material3.colors.quantize
 
-import opensavvy.material3.colors.utils.Color
+import opensavvy.material3.colors.utils.Argb
 
 /** An interface to allow use of different color spaces by quantizers.  */
 interface PointProvider {
 
 	/**
-	 * The four components in the color space, from a sRGB [color].
+	 * The four components in the color space, from a sRGB [argb].
 	 */
-	fun fromColor(color: Color): DoubleArray
+	fun fromArgb(argb: Argb): DoubleArray
 
 	/**
 	 * The color representation of this [point].
 	 */
-	fun toColor(point: DoubleArray): Color
+	fun toArgb(point: DoubleArray): Argb
 
 	/**
 	 * Squared distance between two colors. Distance is defined by scientific color spaces and
 	 * referred to as delta E.
 	 */
-	fun distance(a: DoubleArray, b: DoubleArray): Double
+	fun distance(one: DoubleArray, two: DoubleArray): Double
 }

@@ -16,8 +16,7 @@
 
 package opensavvy.material3.colors.scheme
 
-import opensavvy.material3.colors.dislike.DislikeAnalyzer
-import opensavvy.material3.colors.dynamiccolor.DynamicScheme
+import opensavvy.material3.colors.dislike.fixIfDisliked
 import opensavvy.material3.colors.dynamiccolor.Variant
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.palettes.TonalPalette
@@ -27,26 +26,30 @@ import kotlin.math.max
 /**
  * A scheme that places the source color in Scheme.primaryContainer.
  *
- *
  * Primary Container is the source color, adjusted for color relativity. It maintains constant
  * appearance in light mode and dark mode. This adds ~5 tone in light mode, and subtracts ~5 tone in
  * dark mode.
  *
- *
  * Tertiary Container is the complement to the source color, using TemperatureCache. It also
  * maintains constant appearance.
  */
-class SchemeFidelity(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Double) : DynamicScheme(
-	sourceColorHct = sourceColorHct,
+fun BuiltInScheme.Companion.schemeFidelity(
+	source: Hct,
+	isDark: Boolean,
+	contrastLevel: Double,
+) = BuiltInScheme(
+	sourceColor = source,
 	variant = Variant.FIDELITY,
 	isDark = isDark,
 	contrastLevel = contrastLevel,
-	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, sourceColorHct.chroma),
+	primaryPalette = TonalPalette.fromHueAndChroma(source.hue, source.chroma),
 	secondaryPalette = TonalPalette.fromHueAndChroma(
-		sourceColorHct.hue,
-		max(sourceColorHct.chroma - 32.0, sourceColorHct.chroma * 0.5)),
+		source.hue,
+		max(source.chroma - 32.0, source.chroma * 0.5)),
 	tertiaryPalette = TonalPalette.fromHct(
-		DislikeAnalyzer.fixIfDisliked(TemperatureCache(sourceColorHct).complement)),
-	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, sourceColorHct.chroma / 8.0),
+		TemperatureCache(source).complement.fixIfDisliked()
+	),
+	neutralPalette = TonalPalette.fromHueAndChroma(source.hue, source.chroma / 8.0),
 	neutralVariantPalette = TonalPalette.fromHueAndChroma(
-		sourceColorHct.hue, (sourceColorHct.chroma / 8.0) + 4.0))
+		source.hue, (source.chroma / 8.0) + 4.0)
+)

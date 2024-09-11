@@ -17,7 +17,7 @@
 package opensavvy.material3.colors.score
 
 import opensavvy.material3.colors.hct.Hct
-import opensavvy.material3.colors.utils.Color
+import opensavvy.material3.colors.utils.Argb
 import opensavvy.material3.colors.utils.differenceDegrees
 import opensavvy.material3.colors.utils.sanitizeDegreesInt
 import kotlin.jvm.JvmOverloads
@@ -60,7 +60,7 @@ object Score {
 		desired: Int = 4,
 		fallbackColorArgb: Int = -0xbd7a0c,
 		filter: Boolean = true,
-	): List<Color> {
+	): List<Argb> {
 		// Get the HCT color for each Argb value, while finding the per hue count and
 		// total count.
 
@@ -68,7 +68,7 @@ object Score {
 		val huePopulation = IntArray(360)
 		var populationSum = 0.0
 		for ((key, value) in colorsToPopulation) {
-			val hct = Hct(Color(key!!))
+			val hct = Hct(Argb(key!!))
 			colorsHct.add(hct)
 			val hue = floor(hct.hue).toInt()
 			huePopulation[hue] += value
@@ -132,9 +132,9 @@ object Score {
 				break
 			}
 		}
-		val colors: MutableList<Color> = ArrayList()
+		val colors: MutableList<Argb> = ArrayList()
 		if (chosenColors.isEmpty()) {
-			colors.add(Color(fallbackColorArgb))
+			colors.add(Argb(fallbackColorArgb))
 		}
 		for (chosenHct in chosenColors) {
 			colors.add(chosenHct.argb)

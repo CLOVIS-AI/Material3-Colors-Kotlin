@@ -16,8 +16,8 @@
 
 package opensavvy.material3.colors.hct
 
-import opensavvy.material3.colors.utils.Color.Companion.whitePointD65
-import opensavvy.material3.colors.utils.Color.Companion.yFromLstar
+import opensavvy.material3.colors.utils.Argb.Companion.whitePointD65
+import opensavvy.material3.colors.utils.Argb.Companion.yFromLstar
 import opensavvy.material3.colors.utils.clampDouble
 import opensavvy.material3.colors.utils.lerp
 import kotlin.math.*

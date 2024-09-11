@@ -16,21 +16,27 @@
 
 package opensavvy.material3.colors.scheme
 
-import opensavvy.material3.colors.dynamiccolor.DynamicScheme
 import opensavvy.material3.colors.dynamiccolor.Variant
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.palettes.TonalPalette
 import opensavvy.material3.colors.utils.sanitizeDegreesDouble
 
-/** A playful theme - the source color's hue does not appear in the theme.  */
-class SchemeRainbow(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Double) : DynamicScheme(
-	sourceColorHct = sourceColorHct,
+/**
+ * A playful theme. The source color's hue does not appear in the theme.
+ */
+fun BuiltInScheme.Companion.schemeRainbow(
+	source: Hct,
+	isDark: Boolean,
+	contrastLevel: Double,
+) = BuiltInScheme(
+	sourceColor = source,
 	variant = Variant.RAINBOW,
 	isDark = isDark,
 	contrastLevel = contrastLevel,
-	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 48.0),
-	secondaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 16.0),
+	primaryPalette = TonalPalette.fromHueAndChroma(source.hue, 48.0),
+	secondaryPalette = TonalPalette.fromHueAndChroma(source.hue, 16.0),
 	tertiaryPalette = TonalPalette.fromHueAndChroma(
-		sanitizeDegreesDouble(sourceColorHct.hue + 60.0), 24.0),
-	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
-	neutralVariantPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0))
+		sanitizeDegreesDouble(source.hue + 60.0), 24.0),
+	neutralPalette = TonalPalette.fromHueAndChroma(source.hue, 0.0),
+	neutralVariantPalette = TonalPalette.fromHueAndChroma(source.hue, 0.0)
+)

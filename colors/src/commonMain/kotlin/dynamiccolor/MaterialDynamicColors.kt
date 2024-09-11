@@ -16,8 +16,11 @@
 
 package opensavvy.material3.colors.dynamiccolor
 
-import opensavvy.material3.colors.dislike.DislikeAnalyzer
+import opensavvy.material3.colors.dislike.fixIfDisliked
 import opensavvy.material3.colors.hct.Hct
+import opensavvy.material3.colors.scheme.BuiltInScheme
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -382,7 +385,7 @@ class MaterialDynamicColors {
 			palette = { s -> s.primaryPalette },
 			tone = { s ->
 				if (isFidelity(s)) {
-					return@DynamicColor s.sourceColorHct.tone
+					return@DynamicColor s.sourceColor.tone
 				}
 				if (isMonochrome(s)) {
 					return@DynamicColor if (s.isDark) 85.0 else 25.0
@@ -545,8 +548,8 @@ class MaterialDynamicColors {
 				if (!isFidelity(s)) {
 					return@DynamicColor if (s.isDark) 30.0 else 90.0
 				}
-				val proposedHct: Hct = s.tertiaryPalette.getHct(s.sourceColorHct.tone)
-				DislikeAnalyzer.fixIfDisliked(proposedHct).tone
+				val proposedHct: Hct = s.tertiaryPalette.getHct(s.sourceColor.tone)
+				proposedHct.fixIfDisliked().tone
 			},
 			isBackground = true,
 			background = { s: DynamicScheme -> this.highestSurface(s) },
@@ -886,19 +889,33 @@ class MaterialDynamicColors {
 			tone = { s -> if (s.isDark) 10.0 else 90.0 })
 	}
 
+	@OptIn(ExperimentalContracts::class)
 	private fun isFidelity(scheme: DynamicScheme): Boolean {
-		if (this.isExtendedFidelity
-			&& scheme.variant != Variant.MONOCHROME && scheme.variant != Variant.NEUTRAL) {
-			return true
+		contract {
+			returns(true) implies (scheme is BuiltInScheme)
 		}
-		return scheme.variant == Variant.FIDELITY || scheme.variant == Variant.CONTENT
+
+		if (scheme !is BuiltInScheme)
+			return false
+
+		return this.isExtendedFidelity && scheme.variant != Variant.MONOCHROME && scheme.variant != Variant.NEUTRAL ||
+			scheme.variant == Variant.FIDELITY ||
+			scheme.variant == Variant.CONTENT
+	}
+
+	@OptIn(ExperimentalContracts::class)
+	private fun isMonochrome(scheme: DynamicScheme): Boolean {
+		contract {
+			returns(true) implies (scheme is BuiltInScheme)
+		}
+
+		if (scheme !is BuiltInScheme)
+			return false
+
+		return scheme.variant == Variant.MONOCHROME
 	}
 
 	companion object {
-		private fun isMonochrome(scheme: DynamicScheme): Boolean {
-			return scheme.variant == Variant.MONOCHROME
-		}
-
 		fun findDesiredChromaByTone(
 			hue: Double, chroma: Double, tone: Double, byDecreasingTone: Boolean,
 		): Double {
