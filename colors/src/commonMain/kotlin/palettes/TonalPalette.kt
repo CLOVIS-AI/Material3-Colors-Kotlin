@@ -28,13 +28,13 @@ import kotlin.math.abs
  */
 class TonalPalette private constructor(
 	/** The hue of the Tonal Palette, in HCT. Ranges from 0 to 360.  */
-	var hue: Double,
+	val hue: Double,
 	/** The chroma of the Tonal Palette, in HCT. Ranges from 0 to ~130 (for sRGB gamut).  */
-	var chroma: Double,
+	val chroma: Double,
 	/** The key color is the first tone, starting from T50, that matches the palette's chroma.  */
-	var keyColor: Hct,
+	val keyColor: Hct,
 ) {
-	var cache: MutableMap<Int, Argb> = HashMap()
+	private val cache: MutableMap<Int, Argb> = HashMap()
 
 	/**
 	 * Create an ARGB color with HCT hue and chroma of this Tones instance, and the provided HCT tone.
