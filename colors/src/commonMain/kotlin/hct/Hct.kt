@@ -16,8 +16,8 @@
 
 package opensavvy.material3.colors.hct
 
-import opensavvy.material3.colors.utils.Color
-import opensavvy.material3.colors.utils.Color.Companion.lstarFromY
+import opensavvy.material3.colors.utils.Argb
+import opensavvy.material3.colors.utils.Argb.Companion.lstarFromY
 
 /**
  * A color system built using CAM16 hue and chroma, and L* from L*a*b*.
@@ -39,7 +39,7 @@ import opensavvy.material3.colors.utils.Color.Companion.lstarFromY
  * @constructor Creates an HCT color from an [argb] value, in the default viewing conditions.
  */
 class Hct(
-	val argb: Color,
+	val argb: Argb,
 ) {
 	/**
 	 * Hue of this color.
@@ -63,7 +63,7 @@ class Hct(
 	val tone: Double
 
 	init {
-		val cam = Cam16.fromColor(argb)
+		val cam = Cam16.fromArgb(argb)
 		hue = cam.hue
 		chroma = cam.chroma
 		tone = argb.toLstar()
@@ -79,7 +79,7 @@ class Hct(
 	 * the requested chroma. Chroma has a different maximum for any given hue and tone.
 	 * @param tone 0 <= tone <= 100; invalid values are corrected.
 	 */
-	constructor(hue: Double, chroma: Double, tone: Double) : this(HctSolver.solveToColor(hue, chroma, tone))
+	constructor(hue: Double, chroma: Double, tone: Double) : this(HctSolver.solveToArgb(hue, chroma, tone))
 
 	// region Modify
 
@@ -90,7 +90,7 @@ class Hct(
 	 * @param newHue 0 <= newHue < 360; invalid values are corrected.
 	 */
 	fun withHue(newHue: Double): Hct =
-		Hct(HctSolver.solveToColor(newHue, chroma, tone))
+		Hct(HctSolver.solveToArgb(newHue, chroma, tone))
 
 	/**
 	 * Set the chroma of this color. Chroma may decrease because chroma has a different maximum for
@@ -99,7 +99,7 @@ class Hct(
 	 * @param newChroma 0 <= newChroma < ?
 	 */
 	fun withChroma(newChroma: Double): Hct =
-		Hct(HctSolver.solveToColor(hue, newChroma, tone))
+		Hct(HctSolver.solveToArgb(hue, newChroma, tone))
 
 	/**
 	 * Set the tone of this color. Chroma may decrease because chroma has a different maximum for any
@@ -108,7 +108,7 @@ class Hct(
 	 * @param newTone 0 <= newTone <= 100; invalid valids are corrected.
 	 */
 	fun setTone(newTone: Double): Hct =
-		Hct(HctSolver.solveToColor(hue, chroma, newTone))
+		Hct(HctSolver.solveToArgb(hue, chroma, newTone))
 
 	// endregion
 	// region Viewing conditions
@@ -128,7 +128,7 @@ class Hct(
 	 */
 	fun inViewingConditions(vc: ViewingConditions): Hct {
 		// 1. Use CAM16 to find XYZ coordinates of color in specified VC.
-		val cam16 = Cam16.fromColor(argb)
+		val cam16 = Cam16.fromArgb(argb)
 		val viewedInVc = cam16.xyzInViewingConditions(vc, null)
 
 		// 2. Create CAM16 of those XYZ coordinates in default VC.

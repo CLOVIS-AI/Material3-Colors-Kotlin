@@ -23,7 +23,7 @@ import opensavvy.material3.colors.contrast.Contrast.lighterUnsafe
 import opensavvy.material3.colors.contrast.Contrast.ratioOfTones
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.palettes.TonalPalette
-import opensavvy.material3.colors.utils.Color
+import opensavvy.material3.colors.utils.Argb
 import opensavvy.material3.colors.utils.clampDouble
 import opensavvy.material3.colors.utils.clampInt
 import kotlin.math.*
@@ -122,14 +122,14 @@ class DynamicColor(
 	 * @param scheme Defines the conditions of the user interface, for example, whether or not it is
 	 * dark mode or light mode, and what the desired contrast level is.
 	 */
-	fun getArgb(scheme: DynamicScheme): Color {
+	fun getArgb(scheme: DynamicScheme): Argb {
 		val argb = getHct(scheme).argb
 		if (opacity == null) {
 			return argb
 		}
 		val percentage: Double = opacity.invoke(scheme)
 		val alpha = clampInt(0, 255, (percentage * 255).roundToInt())
-		return Color((argb.argb and 0x00ffffff) or (alpha shl 24))
+		return Argb((argb.argb and 0x00ffffff) or (alpha shl 24))
 	}
 
 	/**
@@ -431,7 +431,7 @@ class DynamicColor(
 		 * @param argb The source color from which to extract the hue and chroma.
 		 */
 		fun fromArgb(name: String, argb: Int): DynamicColor {
-			val hct = Hct(Color(argb))
+			val hct = Hct(Argb(argb))
 			val palette = TonalPalette.fromInt(argb)
 			return fromPalette(
 				name = name,
