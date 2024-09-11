@@ -16,19 +16,25 @@
 
 package opensavvy.material3.colors.scheme
 
-import opensavvy.material3.colors.dynamiccolor.DynamicScheme
 import opensavvy.material3.colors.dynamiccolor.Variant
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.palettes.TonalPalette
 
-/** A monochrome theme, colors are purely black / white / gray.  */
-class SchemeMonochrome(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Double) : DynamicScheme(
-	sourceColorHct = sourceColorHct,
+/**
+ * A monochrome theme, colors are purely black / white / gray.
+ */
+fun BuiltInScheme.Companion.schemeMonochrome(
+	source: Hct,
+	isDark: Boolean,
+	contrastLevel: Double,
+) = BuiltInScheme(
+	sourceColor = source,
 	variant = Variant.MONOCHROME,
 	isDark = isDark,
 	contrastLevel = contrastLevel,
-	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
-	secondaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
-	tertiaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
-	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0),
-	neutralVariantPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 0.0))
+	primaryPalette = TonalPalette.fromHueAndChroma(source.hue, 0.0),
+	secondaryPalette = TonalPalette.fromHueAndChroma(source.hue, 0.0),
+	tertiaryPalette = TonalPalette.fromHueAndChroma(source.hue, 0.0),
+	neutralPalette = TonalPalette.fromHueAndChroma(source.hue, 0.0),
+	neutralVariantPalette = TonalPalette.fromHueAndChroma(source.hue, 0.0)
+)

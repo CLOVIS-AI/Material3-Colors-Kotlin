@@ -16,21 +16,27 @@
 
 package opensavvy.material3.colors.scheme
 
-import opensavvy.material3.colors.dynamiccolor.DynamicScheme
 import opensavvy.material3.colors.dynamiccolor.Variant
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.palettes.TonalPalette
 import opensavvy.material3.colors.utils.sanitizeDegreesDouble
 
-/** A calm theme, sedated colors that aren't particularly chromatic.  */
-class SchemeTonalSpot(sourceColorHct: Hct, isDark: Boolean, contrastLevel: Double) : DynamicScheme(
-	sourceColorHct = sourceColorHct,
+/**
+ * A calm theme, sedated colors that aren't particularly chromatic.
+ */
+fun BuiltInScheme.Companion.schemeTonalSpot(
+	source: Hct,
+	isDark: Boolean,
+	contrastLevel: Double,
+) = BuiltInScheme(
+	sourceColor = source,
 	variant = Variant.TONAL_SPOT,
 	isDark = isDark,
 	contrastLevel = contrastLevel,
-	primaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 36.0),
-	secondaryPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 16.0),
+	primaryPalette = TonalPalette.fromHueAndChroma(source.hue, 36.0),
+	secondaryPalette = TonalPalette.fromHueAndChroma(source.hue, 16.0),
 	tertiaryPalette = TonalPalette.fromHueAndChroma(
-		sanitizeDegreesDouble(sourceColorHct.hue + 60.0), 24.0),
-	neutralPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 6.0),
-	neutralVariantPalette = TonalPalette.fromHueAndChroma(sourceColorHct.hue, 8.0))
+		sanitizeDegreesDouble(source.hue + 60.0), 24.0),
+	neutralPalette = TonalPalette.fromHueAndChroma(source.hue, 6.0),
+	neutralVariantPalette = TonalPalette.fromHueAndChroma(source.hue, 8.0)
+)
