@@ -50,15 +50,15 @@ object Score {
 	 * @param fallbackColorArgb color to be returned if no other options available.
 	 * @param filter whether to filter out undesireable combinations.
 	 * @return Colors sorted by suitability for a UI theme. The most suitable color is the first item,
-	 * the least suitable is the last. There will always be at least one color returned. If all
-	 * the input colors were not suitable for a theme, a default fallback color will be provided,
-	 * Google Blue.
+	 * the least suitable is the last. There will always be at least one color returned.
+	 * If none of the input colors were suitable for a theme, a default fallback color will be provided,
+	 * [Argb.GoogleBlue].
 	 */
 	@JvmOverloads
 	fun score(
-		colorsToPopulation: Map<Int?, Int>,
+		colorsToPopulation: Map<Argb, Int>,
 		desired: Int = 4,
-		fallbackColorArgb: Int = -0xbd7a0c,
+		fallbackColorArgb: Argb = Argb.GoogleBlue,
 		filter: Boolean = true,
 	): List<Argb> {
 		// Get the HCT color for each Argb value, while finding the per hue count and
@@ -68,7 +68,7 @@ object Score {
 		val huePopulation = IntArray(360)
 		var populationSum = 0.0
 		for ((key, value) in colorsToPopulation) {
-			val hct = Hct(Argb(key!!))
+			val hct = Hct(key)
 			colorsHct.add(hct)
 			val hue = floor(hct.hue).toInt()
 			huePopulation[hue] += value
@@ -132,9 +132,9 @@ object Score {
 				break
 			}
 		}
-		val colors: MutableList<Argb> = ArrayList()
+		val colors = ArrayList<Argb>()
 		if (chosenColors.isEmpty()) {
-			colors.add(Argb(fallbackColorArgb))
+			colors.add(fallbackColorArgb)
 		}
 		for (chosenHct in chosenColors) {
 			colors.add(chosenHct.argb)
