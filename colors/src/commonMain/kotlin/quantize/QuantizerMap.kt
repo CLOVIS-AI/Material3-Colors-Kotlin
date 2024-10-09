@@ -16,19 +16,30 @@
 
 package opensavvy.material3.colors.quantize
 
+import opensavvy.material3.colors.argb.Argb
+import opensavvy.material3.colors.argb.ArgbArray
 
-/** Creates a dictionary with keys of colors, and values of count of the color  */
-class QuantizerMap : Quantizer {
-	var colorToCount: Map<Int, Int>? = null
+/**
+ * The simplest [Quantizer] implementation: simply counts the pixels, without doing any color elimination.
+ */
+object QuantizerMap : Quantizer {
 
-	override fun quantize(pixels: IntArray?, colorCount: Int): QuantizerResult {
-		val pixelByCount: MutableMap<Int, Int> = LinkedHashMap()
-		for (pixel in pixels!!) {
-			val currentPixelCount = pixelByCount[pixel]
-			val newPixelCount = if (currentPixelCount == null) 1 else currentPixelCount + 1
-			pixelByCount[pixel] = newPixelCount
+	/**
+	 * Counts how many times each color appears in [pixels].
+	 *
+	 * [maxColors] is ignored.
+	 */
+	override fun quantize(pixels: ArgbArray, maxColors: Int): Quantization =
+		quantize(pixels)
+
+	/**
+	 * Counts how many times each color appears in [pixels].
+	 */
+	fun quantize(pixels: ArgbArray): Quantization {
+		val result = LinkedHashMap<Argb, Int>()
+		for (pixel in pixels) {
+			result[pixel] = (result[pixel] ?: 0) + 1
 		}
-		colorToCount = pixelByCount
-		return QuantizerResult(pixelByCount)
+		return result
 	}
 }

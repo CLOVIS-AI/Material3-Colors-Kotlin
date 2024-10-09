@@ -16,5 +16,16 @@
 
 package opensavvy.material3.colors.quantize
 
-/** Represents result of a quantizer run  */
-class QuantizerResult internal constructor(val colorToCount: Map<Int, Int>)
+import opensavvy.material3.colors.argb.Argb
+
+/**
+ * Represents the results of quantizing an image.
+ *
+ * A quantization is a mapping from a color to a number of occurrences of that color.
+ *
+ * The goal of a quantization is to reduce the number of colors extracted from an image.
+ * By using quantization, similar colors are combined into a single color.
+ *
+ * To obtain a quantization, see [Quantizer].
+ */
+typealias Quantization = Map<Argb, Int>

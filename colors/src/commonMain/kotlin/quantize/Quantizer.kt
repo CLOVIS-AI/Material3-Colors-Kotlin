@@ -16,6 +16,22 @@
 
 package opensavvy.material3.colors.quantize
 
-internal interface Quantizer {
-	fun quantize(pixels: IntArray?, maxColors: Int): QuantizerResult
+import opensavvy.material3.colors.argb.Argb
+import opensavvy.material3.colors.argb.ArgbArray
+
+/**
+ * A utility to create a [Quantization] from an [ArgbArray].
+ *
+ * Quantizers analyze an image to extract the most important colors by combining similar colors together.
+ */
+fun interface Quantizer {
+
+	/**
+	 * Analyze [pixels] to extract the most important colors.
+	 *
+	 * @param pixels A collection of pixels in [Argb] format.
+	 * @param maxColors The maximum number of colors that the returned quantization is allowed to use.
+	 * Note that some quantizers ignore this parameter.
+	 */
+	fun quantize(pixels: ArgbArray, maxColors: Int): Quantization
 }
