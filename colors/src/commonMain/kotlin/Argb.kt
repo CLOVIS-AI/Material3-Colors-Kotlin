@@ -36,6 +36,19 @@ value class Argb(
 	val argb: Int,
 ) {
 
+	/**
+	 * Constructs an [Argb] color from its [red], [green] and [blue] components.
+	 *
+	 * Each component should be expressed in the range `0..255`.
+	 */
+	constructor(red: Int, green: Int, blue: Int) : this(
+		(255 shl 24) or ((red and 255) shl 16) or ((green and 255) shl 8) or (blue and 255)
+	) {
+		require(red in 0..255) { "The red component should be between 0 and 255" }
+		require(green in 0..255) { "The green component should be between 0 and 255" }
+		require(blue in 0..255) { "The blue component should be between 0 and 255" }
+	}
+
 	// region ARGB accessors
 
 	/**
@@ -137,10 +150,6 @@ value class Argb(
 	companion object {
 		// region Converters
 
-		fun fromRgb(red: Int, green: Int, blue: Int) = Argb(
-			argb = (255 shl 24) or ((red and 255) shl 16) or ((green and 255) shl 8) or (blue and 255)
-		)
-
 		/**
 		 * Converts from linear RGB components.
 		 *
@@ -150,7 +159,7 @@ value class Argb(
 			val r = delinearized(linrgb[0])
 			val g = delinearized(linrgb[1])
 			val b = delinearized(linrgb[2])
-			return fromRgb(r, g, b)
+			return Argb(r, g, b)
 		}
 
 		/**
@@ -164,7 +173,7 @@ value class Argb(
 			val r = delinearized(linearR)
 			val g = delinearized(linearG)
 			val b = delinearized(linearB)
-			return fromRgb(r, g, b)
+			return Argb(r, g, b)
 		}
 
 		/**
@@ -190,7 +199,7 @@ value class Argb(
 		fun fromLstar(lstar: Double): Argb {
 			val y = yFromLstar(lstar)
 			val component = delinearized(y)
-			return fromRgb(component, component, component)
+			return Argb(component, component, component)
 		}
 
 		// endregion
@@ -234,11 +243,11 @@ value class Argb(
 		// endregion
 		// region Well-known colors
 
-		val BLACK = fromRgb(0, 0, 0)
-		val WHITE = fromRgb(255, 255, 255)
-		val RED = fromRgb(255, 0, 0)
-		val GREEN = fromRgb(0, 255, 0)
-		val BLUE = fromRgb(0, 0, 255)
+		val BLACK = Argb(0, 0, 0)
+		val WHITE = Argb(255, 255, 255)
+		val RED = Argb(255, 0, 0)
+		val GREEN = Argb(0, 255, 0)
+		val BLUE = Argb(0, 0, 255)
 
 		// endregion
 

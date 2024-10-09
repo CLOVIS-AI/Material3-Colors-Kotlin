@@ -19,14 +19,13 @@ package opensavvy.material3.colors.utils
 import opensavvy.material3.colors.Argb
 import opensavvy.material3.colors.Argb.Companion.fromLab
 import opensavvy.material3.colors.Argb.Companion.fromLinrgb
-import opensavvy.material3.colors.Argb.Companion.fromRgb
 import opensavvy.material3.colors.Argb.Companion.fromXyz
 import opensavvy.prepared.runner.kotest.PreparedSpec
 
 class ColorTest : PreparedSpec({
 	suite("RGB") {
 		test("From RGB") {
-			check(fromRgb(217, 13, 33) == Argb(-2552543))
+			check(Argb(217, 13, 33) == Argb(-2552543))
 		}
 
 		test("Red component") {

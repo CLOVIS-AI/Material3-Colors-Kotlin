@@ -26,7 +26,7 @@ class TemperatureCacheTest : PreparedSpec({
 			Argb.BLACK to Hct(0.0, 0.0, 0.0),
 			Argb.WHITE to Hct(209.0, 2.0, 100.0),
 			Argb.RED to Hct(265.0170142303846, 69.66359963486161, 53.1613744829945),
-			Argb.fromRgb(126, 208, 98) to Hct(6.861709070925022, 39.34080922281131, 76.31165352750943)
+			Argb(126, 208, 98) to Hct(6.861709070925022, 39.34080922281131, 76.31165352750943)
 		)
 
 		for ((input, expected) in colors) {
