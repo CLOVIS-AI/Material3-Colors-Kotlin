@@ -243,11 +243,11 @@ value class Argb(
 		// endregion
 		// region Well-known colors
 
-		val BLACK = Argb(0, 0, 0)
-		val WHITE = Argb(255, 255, 255)
-		val RED = Argb(255, 0, 0)
-		val GREEN = Argb(0, 255, 0)
-		val BLUE = Argb(0, 0, 255)
+		val Black = Argb(0, 0, 0)
+		val White = Argb(255, 255, 255)
+		val Red = Argb(255, 0, 0)
+		val Green = Argb(0, 255, 0)
+		val Blue = Argb(0, 0, 255)
 
 		// endregion
 
