@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, Google LLC, OpenSavvy and contributors.
+ * Copyright (c) 2024, OpenSavvy and contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,4 @@
  * limitations under the License.
  */
 
-package opensavvy.material3.colors.utils
-
-import opensavvy.material3.colors.argb.Argb
-import opensavvy.prepared.runner.kotest.PreparedSpec
-
-class StringUtilsTest : PreparedSpec({
-	test("Red") {
-		check(Argb(255, 0, 0).toString() == "#ff0000")
-	}
-
-	test("White") {
-		check(Argb(255, 255, 255).toString() == "#ffffff")
-	}
-})
+package opensavvy.material3.colors

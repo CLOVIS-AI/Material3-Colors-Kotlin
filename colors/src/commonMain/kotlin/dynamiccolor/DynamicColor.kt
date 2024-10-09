@@ -16,7 +16,7 @@
 
 package opensavvy.material3.colors.dynamiccolor
 
-import opensavvy.material3.colors.Argb
+import opensavvy.material3.colors.argb.Argb
 import opensavvy.material3.colors.contrast.Contrast.darker
 import opensavvy.material3.colors.contrast.Contrast.darkerUnsafe
 import opensavvy.material3.colors.contrast.Contrast.lighter

@@ -16,8 +16,8 @@
 
 package opensavvy.material3.colors.hct
 
-import opensavvy.material3.colors.Argb
-import opensavvy.material3.colors.Argb.Companion.lstarFromY
+import opensavvy.material3.colors.argb.Argb
+import opensavvy.material3.colors.argb.Argb.Companion.lstarFromY
 
 /**
  * A color system built using CAM16 hue and chroma, and L* from L*a*b*.

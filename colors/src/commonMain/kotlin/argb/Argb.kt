@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package opensavvy.material3.colors
+package opensavvy.material3.colors.argb
 
 import opensavvy.material3.colors.utils.clampInt
 import opensavvy.material3.colors.utils.matrixMultiply

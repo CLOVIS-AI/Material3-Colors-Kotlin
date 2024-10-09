@@ -16,7 +16,7 @@
 
 package opensavvy.material3.colors.blend
 
-import opensavvy.material3.colors.Argb
+import opensavvy.material3.colors.argb.Argb
 import opensavvy.material3.colors.hct.Cam16
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.utils.differenceDegrees

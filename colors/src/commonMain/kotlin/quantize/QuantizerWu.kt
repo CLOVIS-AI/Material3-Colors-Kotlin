@@ -16,7 +16,7 @@
 
 package opensavvy.material3.colors.quantize
 
-import opensavvy.material3.colors.Argb
+import opensavvy.material3.colors.argb.Argb
 
 /**
  * An image quantizer that divides the image's pixels into clusters by recursively cutting an RGB

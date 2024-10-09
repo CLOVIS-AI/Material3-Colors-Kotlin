@@ -16,7 +16,7 @@
 
 package opensavvy.material3.colors.temperature
 
-import opensavvy.material3.colors.Argb
+import opensavvy.material3.colors.argb.Argb
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.prepared.runner.kotest.PreparedSpec
 

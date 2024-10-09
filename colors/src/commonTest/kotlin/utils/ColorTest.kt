@@ -16,10 +16,10 @@
 
 package opensavvy.material3.colors.utils
 
-import opensavvy.material3.colors.Argb
-import opensavvy.material3.colors.Argb.Companion.fromLab
-import opensavvy.material3.colors.Argb.Companion.fromLinrgb
-import opensavvy.material3.colors.Argb.Companion.fromXyz
+import opensavvy.material3.colors.argb.Argb
+import opensavvy.material3.colors.argb.Argb.Companion.fromLab
+import opensavvy.material3.colors.argb.Argb.Companion.fromLinrgb
+import opensavvy.material3.colors.argb.Argb.Companion.fromXyz
 import opensavvy.prepared.runner.kotest.PreparedSpec
 
 class ColorTest : PreparedSpec({

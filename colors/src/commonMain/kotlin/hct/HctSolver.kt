@@ -16,10 +16,10 @@
 
 package opensavvy.material3.colors.hct
 
-import opensavvy.material3.colors.Argb
-import opensavvy.material3.colors.Argb.Companion.fromLinrgb
-import opensavvy.material3.colors.Argb.Companion.fromLstar
-import opensavvy.material3.colors.Argb.Companion.yFromLstar
+import opensavvy.material3.colors.argb.Argb
+import opensavvy.material3.colors.argb.Argb.Companion.fromLinrgb
+import opensavvy.material3.colors.argb.Argb.Companion.fromLstar
+import opensavvy.material3.colors.argb.Argb.Companion.yFromLstar
 import opensavvy.material3.colors.utils.matrixMultiply
 import opensavvy.material3.colors.utils.sanitizeDegreesDouble
 import opensavvy.material3.colors.utils.signum
