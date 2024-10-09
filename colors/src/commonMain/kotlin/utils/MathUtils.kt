@@ -24,14 +24,10 @@ import kotlin.math.abs
  *
  * @return 1 if num > 0, -1 if num < 0, and 0 if num = 0
  */
-internal fun signum(num: Double): Int {
-	return if (num < 0) {
-		-1
-	} else if (num == 0.0) {
-		0
-	} else {
-		1
-	}
+internal fun signum(num: Double): Int = when {
+	num < 0 -> -1
+	num == 0.0 -> 0
+	else -> 1
 }
 
 /**
