@@ -249,6 +249,11 @@ value class Argb(
 		val Green = Argb(0, 255, 0)
 		val Blue = Argb(0, 0, 255)
 
+		val GoogleBlue = Argb(66, 133, 244)
+		val GoogleRed = Argb(219, 68, 55)
+		val GoogleYellow = Argb(244, 180, 0)
+		val GoogleGreen = Argb(15, 157, 88)
+
 		// endregion
 
 		/**
