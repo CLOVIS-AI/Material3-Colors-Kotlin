@@ -56,7 +56,7 @@ value class Argb(
 	 *
 	 * From 0 (fully transparent) to 255 (fully opaque).
 	 */
-	val alpha: Int
+	inline val alpha: Int
 		get() = argb shr 24 and 255
 
 	/**
@@ -64,7 +64,7 @@ value class Argb(
 	 *
 	 * From 0 (no red) to 255 (max red).
 	 */
-	val red: Int
+	inline val red: Int
 		get() = argb shr 16 and 255
 
 	/**
@@ -72,7 +72,7 @@ value class Argb(
 	 *
 	 * From 0 (no green) to 255 (max green).
 	 */
-	val green: Int
+	inline val green: Int
 		get() = argb shr 8 and 255
 
 	/**
@@ -80,13 +80,13 @@ value class Argb(
 	 *
 	 * From 0 (no blue) to 255 (max blue).
 	 */
-	val blue: Int
+	inline val blue: Int
 		get() = argb and 255
 
 	/**
 	 * `true` is this color is fully opaque.
 	 */
-	val isOpaque: Boolean
+	inline val isOpaque: Boolean
 		get() = alpha >= 255
 
 	// endregion
