@@ -16,8 +16,8 @@
 
 package opensavvy.material3.colors.hct
 
-import opensavvy.material3.colors.utils.Argb
-import opensavvy.material3.colors.utils.linearized
+import opensavvy.material3.colors.Argb
+import opensavvy.material3.colors.linearized
 import opensavvy.material3.colors.utils.toDegrees
 import opensavvy.material3.colors.utils.toRadians
 import kotlin.math.*

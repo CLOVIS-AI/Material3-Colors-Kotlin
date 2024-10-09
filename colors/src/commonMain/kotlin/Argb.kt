@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package opensavvy.material3.colors.utils
+package opensavvy.material3.colors
 
+import opensavvy.material3.colors.utils.clampInt
+import opensavvy.material3.colors.utils.matrixMultiply
 import kotlin.jvm.JvmInline
 import kotlin.math.pow
 import kotlin.math.round

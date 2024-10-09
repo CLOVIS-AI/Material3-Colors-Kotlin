@@ -16,6 +16,7 @@
 
 package opensavvy.material3.colors.dynamiccolor
 
+import opensavvy.material3.colors.Argb
 import opensavvy.material3.colors.contrast.Contrast.darker
 import opensavvy.material3.colors.contrast.Contrast.darkerUnsafe
 import opensavvy.material3.colors.contrast.Contrast.lighter
@@ -23,7 +24,6 @@ import opensavvy.material3.colors.contrast.Contrast.lighterUnsafe
 import opensavvy.material3.colors.contrast.Contrast.ratioOfTones
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.palettes.TonalPalette
-import opensavvy.material3.colors.utils.Argb
 import opensavvy.material3.colors.utils.clampDouble
 import opensavvy.material3.colors.utils.clampInt
 import kotlin.math.*

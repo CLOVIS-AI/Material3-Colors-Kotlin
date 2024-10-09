@@ -16,8 +16,8 @@
 
 package opensavvy.material3.colors.quantize
 
-import opensavvy.material3.colors.utils.Argb
-import opensavvy.material3.colors.utils.Argb.Companion.fromLab
+import opensavvy.material3.colors.Argb
+import opensavvy.material3.colors.Argb.Companion.fromLab
 
 /**
  * Provides conversions needed for K-Means quantization. Converting input to points, and converting

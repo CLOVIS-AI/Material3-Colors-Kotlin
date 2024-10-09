@@ -16,7 +16,7 @@
 
 package opensavvy.material3.colors.quantize
 
-import opensavvy.material3.colors.utils.Argb
+import opensavvy.material3.colors.Argb
 
 /** An interface to allow use of different color spaces by quantizers.  */
 interface PointProvider {

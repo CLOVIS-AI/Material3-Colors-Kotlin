@@ -16,7 +16,7 @@
 
 package opensavvy.material3.colors.quantize
 
-import opensavvy.material3.colors.utils.Argb
+import opensavvy.material3.colors.Argb
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.sqrt

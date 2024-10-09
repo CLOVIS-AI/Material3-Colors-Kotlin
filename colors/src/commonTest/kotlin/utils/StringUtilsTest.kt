@@ -16,7 +16,7 @@
 
 package opensavvy.material3.colors.utils
 
-import opensavvy.material3.colors.utils.Argb.Companion.fromRgb
+import opensavvy.material3.colors.Argb.Companion.fromRgb
 import opensavvy.prepared.runner.kotest.PreparedSpec
 
 class StringUtilsTest : PreparedSpec({

@@ -16,9 +16,9 @@
 
 package opensavvy.material3.colors.dynamiccolor
 
+import opensavvy.material3.colors.Argb
 import opensavvy.material3.colors.hct.Hct
 import opensavvy.material3.colors.palettes.TonalPalette
-import opensavvy.material3.colors.utils.Argb
 import opensavvy.material3.colors.utils.sanitizeDegreesDouble
 
 interface DynamicScheme {
