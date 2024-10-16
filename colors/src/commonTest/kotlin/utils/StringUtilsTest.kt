@@ -16,15 +16,15 @@
 
 package opensavvy.material3.colors.utils
 
-import opensavvy.material3.colors.utils.Argb.Companion.fromRgb
+import opensavvy.material3.colors.argb.Argb
 import opensavvy.prepared.runner.kotest.PreparedSpec
 
 class StringUtilsTest : PreparedSpec({
 	test("Red") {
-		check(fromRgb(255, 0, 0).toString() == "#ff0000")
+		check(Argb(255, 0, 0).toString() == "#ff0000")
 	}
 
 	test("White") {
-		check(fromRgb(255, 255, 255).toString() == "#ffffff")
+		check(Argb(255, 255, 255).toString() == "#ffffff")
 	}
 })

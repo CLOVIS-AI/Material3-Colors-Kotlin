@@ -16,7 +16,8 @@
 
 package opensavvy.material3.colors.quantize
 
-import opensavvy.material3.colors.utils.Argb
+import opensavvy.material3.colors.argb.Argb
+import opensavvy.material3.colors.argb.ArgbArray
 
 /**
  * An image quantizer that divides the image's pixels into clusters by recursively cutting an RGB
@@ -26,27 +27,27 @@ import opensavvy.material3.colors.utils.Argb
  * The algorithm was described by Xiaolin Wu in Graphic Gems II, published in 1991.
  */
 class QuantizerWu : Quantizer {
-	lateinit var weights: IntArray
-	lateinit var momentsR: IntArray
-	lateinit var momentsG: IntArray
-	lateinit var momentsB: IntArray
-	lateinit var moments: DoubleArray
-	lateinit var cubes: Array<Box?>
+	private lateinit var weights: IntArray
+	private lateinit var momentsR: IntArray
+	private lateinit var momentsG: IntArray
+	private lateinit var momentsB: IntArray
+	private lateinit var moments: DoubleArray
+	private lateinit var cubes: Array<Box?>
 
-	override fun quantize(pixels: IntArray?, colorCount: Int): QuantizerResult {
-		val mapResult = QuantizerMap().quantize(pixels, colorCount)
-		constructHistogram(mapResult.colorToCount)
+	override fun quantize(pixels: ArgbArray, colorCount: Int): Quantization {
+		val mapResult = QuantizerMap.quantize(pixels)
+		constructHistogram(mapResult)
 		createMoments()
 		val createBoxesResult = createBoxes(colorCount)
 		val colors = createResult(createBoxesResult.resultCount)
-		val resultMap = LinkedHashMap<Int, Int>()
+		val resultMap = LinkedHashMap<Argb, Int>()
 		for (color in colors) {
 			resultMap[color] = 0
 		}
-		return QuantizerResult(resultMap)
+		return resultMap
 	}
 
-	fun constructHistogram(pixels: Map<Int, Int>) {
+	private fun constructHistogram(pixels: Quantization) {
 		weights = IntArray(TOTAL_SIZE)
 		momentsR = IntArray(TOTAL_SIZE)
 		momentsG = IntArray(TOTAL_SIZE)
@@ -54,9 +55,9 @@ class QuantizerWu : Quantizer {
 		moments = DoubleArray(TOTAL_SIZE)
 
 		for ((pixel, count) in pixels) {
-			val red = Argb(pixel).red
-			val green = Argb(pixel).green
-			val blue = Argb(pixel).blue
+			val red = pixel.red
+			val green = pixel.green
+			val blue = pixel.blue
 			val bitsToRemove = 8 - INDEX_BITS
 			val iR = (red shr bitsToRemove) + 1
 			val iG = (green shr bitsToRemove) + 1
@@ -70,7 +71,7 @@ class QuantizerWu : Quantizer {
 		}
 	}
 
-	fun createMoments() {
+	private fun createMoments() {
 		for (r in 1 until INDEX_COUNT) {
 			val area = IntArray(INDEX_COUNT)
 			val areaR = IntArray(INDEX_COUNT)
@@ -109,7 +110,7 @@ class QuantizerWu : Quantizer {
 		}
 	}
 
-	fun createBoxes(maxColorCount: Int): CreateBoxesResult {
+	private fun createBoxes(maxColorCount: Int): CreateBoxesResult {
 		cubes = arrayOfNulls(maxColorCount)
 		for (i in 0 until maxColorCount) {
 			cubes[i] = Box()
@@ -151,8 +152,8 @@ class QuantizerWu : Quantizer {
 		return CreateBoxesResult(maxColorCount, generatedColorCount)
 	}
 
-	fun createResult(colorCount: Int): List<Int> {
-		val colors = ArrayList<Int>()
+	private fun createResult(colorCount: Int): List<Argb> {
+		val colors = ArrayList<Argb>()
 		for (i in 0 until colorCount) {
 			val cube = cubes[i]
 			val weight = volume(cube, weights)
@@ -160,14 +161,13 @@ class QuantizerWu : Quantizer {
 				val r = volume(cube, momentsR) / weight
 				val g = volume(cube, momentsG) / weight
 				val b = volume(cube, momentsB) / weight
-				val color = (255 shl 24) or ((r and 0x0ff) shl 16) or ((g and 0x0ff) shl 8) or (b and 0x0ff)
-				colors.add(color)
+				colors.add(Argb(r, g, b))
 			}
 		}
 		return colors
 	}
 
-	fun variance(cube: Box?): Double {
+	private fun variance(cube: Box?): Double {
 		val dr = volume(cube, momentsR)
 		val dg = volume(cube, momentsG)
 		val db = volume(cube, momentsB)
@@ -186,7 +186,7 @@ class QuantizerWu : Quantizer {
 		return xx - hypotenuse / (volume.toDouble())
 	}
 
-	fun cut(one: Box?, two: Box?): Boolean {
+	private fun cut(one: Box?, two: Box?): Boolean {
 		val wholeR = volume(one, momentsR)
 		val wholeG = volume(one, momentsG)
 		val wholeB = volume(one, momentsB)
@@ -246,7 +246,7 @@ class QuantizerWu : Quantizer {
 		return true
 	}
 
-	fun maximize(
+	private fun maximize(
 		cube: Box?,
 		direction: Direction,
 		first: Int,
@@ -301,20 +301,20 @@ class QuantizerWu : Quantizer {
 		return MaximizeResult(cut, max)
 	}
 
-	enum class Direction {
+	private enum class Direction {
 		RED,
 		GREEN,
 		BLUE
 	}
 
-	class MaximizeResult(
+	private class MaximizeResult(
 		// < 0 if cut impossible
 		var cutLocation: Int, var maximum: Double,
 	)
 
-	class CreateBoxesResult(var requestedCount: Int, var resultCount: Int)
+	private class CreateBoxesResult(var requestedCount: Int, var resultCount: Int)
 
-	class Box {
+	private class Box {
 		var r0: Int = 0
 		var r1: Int = 0
 		var g0: Int = 0
@@ -333,11 +333,11 @@ class QuantizerWu : Quantizer {
 		private const val INDEX_COUNT = 33 // ((1 << INDEX_BITS) + 1)
 		private const val TOTAL_SIZE = 35937 // INDEX_COUNT * INDEX_COUNT * INDEX_COUNT
 
-		fun getIndex(r: Int, g: Int, b: Int): Int {
+		private fun getIndex(r: Int, g: Int, b: Int): Int {
 			return (r shl (INDEX_BITS * 2)) + (r shl (INDEX_BITS + 1)) + r + (g shl INDEX_BITS) + g + b
 		}
 
-		fun volume(cube: Box?, moment: IntArray): Int {
+		private fun volume(cube: Box?, moment: IntArray): Int {
 			return ((((moment[getIndex(cube!!.r1, cube.g1, cube.b1)]
 				- moment[getIndex(cube.r1, cube.g1, cube.b0)]
 				- moment[getIndex(cube.r1, cube.g0, cube.b1)])
@@ -348,7 +348,7 @@ class QuantizerWu : Quantizer {
 				- moment[getIndex(cube.r0, cube.g0, cube.b0)])
 		}
 
-		fun bottom(cube: Box?, direction: Direction, moment: IntArray): Int {
+		private fun bottom(cube: Box?, direction: Direction, moment: IntArray): Int {
 			return when (direction) {
 				Direction.RED -> ((-moment[getIndex(cube!!.r0, cube.g1, cube.b1)]
 					+ moment[getIndex(cube.r0, cube.g1, cube.b0)]
@@ -367,7 +367,7 @@ class QuantizerWu : Quantizer {
 			}
 		}
 
-		fun top(cube: Box?, direction: Direction, position: Int, moment: IntArray): Int {
+		private fun top(cube: Box?, direction: Direction, position: Int, moment: IntArray): Int {
 			return when (direction) {
 				Direction.RED -> ((moment[getIndex(position, cube!!.g1, cube.b1)]
 					- moment[getIndex(position, cube.g1, cube.b0)]

@@ -16,16 +16,16 @@
 
 package opensavvy.material3.colors.utils
 
-import opensavvy.material3.colors.utils.Argb.Companion.fromLab
-import opensavvy.material3.colors.utils.Argb.Companion.fromLinrgb
-import opensavvy.material3.colors.utils.Argb.Companion.fromRgb
-import opensavvy.material3.colors.utils.Argb.Companion.fromXyz
+import opensavvy.material3.colors.argb.Argb
+import opensavvy.material3.colors.argb.Argb.Companion.fromLab
+import opensavvy.material3.colors.argb.Argb.Companion.fromLinrgb
+import opensavvy.material3.colors.argb.Argb.Companion.fromXyz
 import opensavvy.prepared.runner.kotest.PreparedSpec
 
 class ColorTest : PreparedSpec({
 	suite("RGB") {
 		test("From RGB") {
-			check(fromRgb(217, 13, 33) == Argb(-2552543))
+			check(Argb(217, 13, 33) == Argb(-2552543))
 		}
 
 		test("Red component") {

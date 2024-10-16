@@ -16,7 +16,8 @@
 
 package opensavvy.material3.colors.quantize
 
-import opensavvy.material3.colors.utils.Argb
+import opensavvy.material3.colors.argb.Argb
+import opensavvy.material3.colors.argb.ArgbArray
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.sqrt
@@ -27,12 +28,10 @@ import kotlin.random.Random
  * several optimizations, including deduping identical pixels and a triangle inequality rule that
  * reduces the number of comparisons needed to identify which cluster a point should be moved to.
  *
- *
  * Wsmeans stands for Weighted Square Means.
  *
- *
- * This algorithm was designed by M. Emre Celebi, and was found in their 2011 paper, Improving
- * the Performance of K-Means for Color Quantization. https://arxiv.org/abs/1101.0395
+ * This algorithm was designed by M. Emre Celebi, and was found in their 2011 paper,
+ * [Improving the Performance of K-Means for Color Quantization](https://arxiv.org/abs/1101.0395).
  */
 object QuantizerWsmeans {
 	private const val MAX_ITERATIONS = 10
@@ -53,14 +52,16 @@ object QuantizerWsmeans {
 	 * to the color.
 	 */
 	fun quantize(
-		inputPixels: IntArray, startingClusters: IntArray, maxColors: Int,
-	): Map<Int, Int> {
+		inputPixels: ArgbArray,
+		startingClusters: ArgbArray,
+		maxColors: Int,
+	): Quantization {
 		// Uses a seeded random number generator to ensure consistent results.
 		val random = Random(0x42688)
 
-		val pixelToCount = LinkedHashMap<Int, Int>()
+		val pixelToCount = LinkedHashMap<Argb, Int>()
 		val points = arrayOfNulls<DoubleArray>(inputPixels.size)
-		val pixels = IntArray(inputPixels.size)
+		val pixels = ArgbArray(inputPixels.size)
 		val pointProvider = PointProviderLab()
 
 		var pointCount = 0
@@ -68,7 +69,7 @@ object QuantizerWsmeans {
 			val inputPixel = inputPixels[i]
 			val pixelCount = pixelToCount[inputPixel]
 			if (pixelCount == null) {
-				points[pointCount] = pointProvider.fromArgb(Argb(inputPixel))
+				points[pointCount] = pointProvider.fromArgb(inputPixel)
 				pixels[pointCount] = inputPixel
 				pointCount++
 
@@ -93,7 +94,7 @@ object QuantizerWsmeans {
 		var clustersCreated = 0
 		val clusters = Array(startingClusters.size) {
 			clustersCreated++
-			pointProvider.fromArgb(Argb(startingClusters[it]))
+			pointProvider.fromArgb(startingClusters[it])
 		}
 
 		val additionalClustersNeeded = clusterCount - clustersCreated
@@ -195,14 +196,14 @@ object QuantizerWsmeans {
 			}
 		}
 
-		val argbToPopulation = LinkedHashMap<Int, Int>()
+		val argbToPopulation = LinkedHashMap<Argb, Int>()
 		for (i in 0 until clusterCount) {
 			val count = pixelCountSums[i]
 			if (count == 0) {
 				continue
 			}
 
-			val possibleNewCluster = pointProvider.toArgb(clusters[i]).argb
+			val possibleNewCluster = pointProvider.toArgb(clusters[i])
 			if (argbToPopulation.containsKey(possibleNewCluster)) {
 				continue
 			}

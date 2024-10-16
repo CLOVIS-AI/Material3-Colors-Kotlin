@@ -16,17 +16,20 @@
 
 package opensavvy.material3.colors.quantize
 
+import opensavvy.material3.colors.argb.ArgbArray
+import opensavvy.material3.colors.argb.toArgbArray
+
 /**
  * An image quantizer that improves on the quality of a standard K-Means algorithm by setting the
  * K-Means initial state to the output of a Wu quantizer, instead of random centroids. Improves on
  * speed by several optimizations, as implemented in Wsmeans, or Weighted Square Means, K-Means with
  * those optimizations.
  *
- *
- * This algorithm was designed by M. Emre Celebi, and was found in their 2011 paper, Improving
- * the Performance of K-Means for Color Quantization. https://arxiv.org/abs/1101.0395
+ * This algorithm was designed by M. Emre Celebi, and was found in their 2011 paper,
+ * [Improving the Performance of K-Means for Color Quantization](https://arxiv.org/abs/1101.0395).
  */
-object QuantizerCelebi {
+object QuantizerCelebi : Quantizer {
+
 	/**
 	 * Reduce the number of colors needed to represented the input, minimizing the difference between
 	 * the original image and the recolored image.
@@ -37,17 +40,11 @@ object QuantizerCelebi {
 	 * @return Map with keys of colors in ARGB format, and values of number of pixels in the original
 	 * image that correspond to the color in the quantized image.
 	 */
-	fun quantize(pixels: IntArray, maxColors: Int): Map<Int, Int> {
+	override fun quantize(pixels: ArgbArray, maxColors: Int): Quantization {
 		val wu = QuantizerWu()
-		val wuResult: QuantizerResult = wu.quantize(pixels, maxColors)
+		val wuResult: Quantization = wu.quantize(pixels, maxColors)
 
-		val wuClustersAsObjects: Set<Int> = wuResult.colorToCount.keys
-		var index = 0
-		val wuClusters = IntArray(wuClustersAsObjects.size)
-		for (argb in wuClustersAsObjects) {
-			wuClusters[index++] = argb
-		}
-
+		val wuClusters = wuResult.keys.toArgbArray()
 		return QuantizerWsmeans.quantize(pixels, wuClusters, maxColors)
 	}
 }

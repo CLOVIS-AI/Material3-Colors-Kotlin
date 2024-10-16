@@ -16,8 +16,8 @@
 
 package opensavvy.material3.colors.palettes
 
+import opensavvy.material3.colors.argb.Argb
 import opensavvy.material3.colors.hct.Hct
-import opensavvy.material3.colors.utils.Argb
 import kotlin.math.abs
 
 /**
