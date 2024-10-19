@@ -24,66 +24,56 @@ import opensavvy.material3.colors.utils.rotationDirection
 import opensavvy.material3.colors.utils.sanitizeDegreesDouble
 import kotlin.math.min
 
-/** Functions for blending in HCT and CAM16.  */
-object Blend {
-	/**
-	 * Blend the design color's HCT hue towards the key color's HCT hue, in a way that leaves the
-	 * original color recognizable and recognizably shifted towards the key color.
-	 *
-	 * @param designArgb ARGB representation of an arbitrary color.
-	 * @param sourceColor ARGB representation of the main theme color.
-	 * @return The design color with a hue shifted towards the system's color, a slightly
-	 * warmer/cooler variant of the design color's hue.
-	 */
-	fun harmonize(designArgb: Argb, sourceColor: Argb): Argb {
-		val fromHct = Hct(designArgb)
-		val toHct = Hct(sourceColor)
-		val differenceDegrees = differenceDegrees(fromHct.hue, toHct.hue)
-		val rotationDegrees = min(differenceDegrees * 0.5, 15.0)
-		val outputHue =
-			sanitizeDegreesDouble(
-				fromHct.hue
-					+ rotationDegrees * rotationDirection(fromHct.hue, toHct.hue))
-		return Hct(outputHue, fromHct.chroma, fromHct.tone).argb
-	}
+/**
+ * Blend this color's HCT hue towards the [keyColor]'s HCT hue, in a way that leaves the
+ * original color recognizable and recognizably shifted towards the [keyColor].
+ *
+ * @return The current color, with a hue shifted towards the [keyColor]:
+ * a slightly warmer/cooler variant of the current color, that harmonizes better with [keyColor].
+ */
+fun Argb.harmonizeWith(keyColor: Argb): Argb {
+	val design = Hct(this)
+	val key = Hct(keyColor)
+	val differenceDegrees = differenceDegrees(design.hue, key.hue)
+	val rotationDegrees = min(differenceDegrees * 0.5, 15.0)
+	val outputHue = sanitizeDegreesDouble(
+		design.hue + rotationDegrees * rotationDirection(design.hue, key.hue)
+	)
+	return Hct(outputHue, design.chroma, design.tone).argb
+}
 
-	/**
-	 * Blends hue from one color into another. The chroma and tone of the original color are
-	 * maintained.
-	 *
-	 * @param from ARGB representation of color
-	 * @param to ARGB representation of color
-	 * @param amount how much blending to perform; 0.0 >= and <= 1.0
-	 * @return from, with a hue blended towards to. Chroma and tone are constant.
-	 */
-	fun hctHue(from: Argb, to: Argb, amount: Double): Argb {
-		val ucs = cam16Ucs(from, to, amount)
-		val ucsCam = Cam16.fromArgb(ucs)
-		val fromCam = Cam16.fromArgb(from)
-		val blended = Hct(ucsCam.hue, fromCam.chroma, from.toLstar())
-		return blended.argb
-	}
+/**
+ * Blends hue from the current color into [other]. The chroma and tone of the original color are
+ * maintained.
+ *
+ * @param amount How much blending to perform, in `0.0 .. 1.0`.
+ * @return The current color, with a hue blended towards [other]. Chroma and tone are not modified.
+ */
+fun Argb.blendHueTowards(other: Argb, amount: Double = 0.5): Argb {
+	val ucs = this.blendInCam16Ucs(other, amount)
+	val ucsCam = Cam16.fromArgb(ucs)
+	val fromCam = Cam16.fromArgb(this)
+	val blended = Hct(ucsCam.hue, fromCam.chroma, other.toLstar())
+	return blended.argb
+}
 
-	/**
-	 * Blend in CAM16-UCS space.
-	 *
-	 * @param from ARGB representation of color
-	 * @param to ARGB representation of color
-	 * @param amount how much blending to perform; 0.0 >= and <= 1.0
-	 * @return from, blended towards to. Hue, chroma, and tone will change.
-	 */
-	fun cam16Ucs(from: Argb, to: Argb, amount: Double): Argb {
-		val fromCam = Cam16.fromArgb(from)
-		val toCam = Cam16.fromArgb(to)
-		val fromJ = fromCam.jstar
-		val fromA = fromCam.astar
-		val fromB = fromCam.bstar
-		val toJ = toCam.jstar
-		val toA = toCam.astar
-		val toB = toCam.bstar
-		val jstar = fromJ + (toJ - fromJ) * amount
-		val astar = fromA + (toA - fromA) * amount
-		val bstar = fromB + (toB - fromB) * amount
-		return Cam16.fromUcs(jstar, astar, bstar).toColor()
-	}
+/**
+ * Blend the current color with [other] in CAM16-UCS space.
+ *
+ * @param amount How much blending to perform, in `0.0 .. 1.0`.
+ * @return The current color, blended towards [other]. Hue, chroma and tone will change.
+ */
+fun Argb.blendInCam16Ucs(other: Argb, amount: Double = 0.5): Argb {
+	val fromCam = Cam16.fromArgb(this)
+	val toCam = Cam16.fromArgb(other)
+	val fromJ = fromCam.jstar
+	val fromA = fromCam.astar
+	val fromB = fromCam.bstar
+	val toJ = toCam.jstar
+	val toA = toCam.astar
+	val toB = toCam.bstar
+	val jstar = fromJ + (toJ - fromJ) * amount
+	val astar = fromA + (toA - fromA) * amount
+	val bstar = fromB + (toB - fromB) * amount
+	return Cam16.fromUcs(jstar, astar, bstar).toColor()
 }
