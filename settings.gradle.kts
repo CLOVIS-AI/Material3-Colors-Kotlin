@@ -14,6 +14,12 @@ dependencyResolutionManagement {
 	repositories {
 		mavenCentral()
 	}
+
+	versionCatalogs {
+		create("libsCommon") {
+			from(files("gradle/common.versions.toml"))
+		}
+	}
 }
 
 pluginManagement {
@@ -49,12 +55,13 @@ pluginManagement {
 }
 
 plugins {
-	id("dev.opensavvy.conventions.settings") version "1.5.2"
+	id("dev.opensavvy.conventions.settings") version "2.0.1"
 }
 
 include(
 	"colors",
 
+	"docs:website",
 	"gradle:templates:template-app",
 	"gradle:templates:template-lib",
 )

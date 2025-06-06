@@ -1,12 +1,10 @@
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
-
 plugins {
 	alias(opensavvyConventions.plugins.base)
 	alias(opensavvyConventions.plugins.kotlin.library)
-	alias(opensavvyConventions.plugins.aligned.kotest)
+	alias(libsCommon.plugins.kotest)
 }
 
-@OptIn(ExperimentalWasmDsl::class)
+@OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
 kotlin {
 	jvm {
 		testRuns.named("test") {
@@ -34,10 +32,6 @@ kotlin {
 	tvosArm64()
 	tvosSimulatorArm64()
 	mingwX64()
-	wasmJs {
-		browser()
-		nodejs()
-	}
 
 	sourceSets.commonTest.dependencies {
 		implementation(libs.prepared.kotest)
