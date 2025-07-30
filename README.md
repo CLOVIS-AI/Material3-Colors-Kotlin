@@ -1,5 +1,10 @@
 # Material You for Kotlin
 
+> This project is archived.
+> We do not plan on updating it further.
+> 
+> We recommend you migrate to [MaterialKolor](https://materialkolor.com/).
+
 Kotlin Multiplatform port of the [Material You color utilities](https://github.com/material-foundation/material-color-utilities).
 
 This library allows to generate Material You color palettes from single colors, etc.

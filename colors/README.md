@@ -1,10 +1,15 @@
-# Module Material You color generator
+# Module Material You color generator (deprecated)
 
 Pure Kotlin Multiplatform implementation of the Material You color algorithm.
 
 <a href="https://search.maven.org/search?q=dev.opensavvy.material3.utilities"><img src="https://img.shields.io/maven-central/v/dev.opensavvy.material3.utilities/colors.svg?label=Maven%20Central"></a>
-<a href="https://opensavvy.dev/open-source/stability.html"><img src="https://badgen.net/static/Stability/alpha/purple"></a>
+<a href="https://opensavvy.dev/open-source/stability.html"><img src="https://badgen.net/static/Stability/archived/purple"></a>
 <a href="https://javadoc.io/doc/dev.opensavvy.material3.utilities/colors"><img src="https://badgen.net/static/Other%20versions/javadoc.io/blue"></a>
+
+> This project is archived.
+> We do not plan on updating it further.
+>
+> We recommend you migrate to [MaterialKolor](https://materialkolor.com/).
 
 This is a Kotlin Multiplatform port of [the Java Material You algorithm](https://github.com/material-foundation/material-color-utilities), using Kotlin language features to improve the API.
 
