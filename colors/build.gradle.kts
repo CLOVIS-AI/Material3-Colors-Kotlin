@@ -39,7 +39,7 @@ kotlin {
 }
 
 library {
-	name.set("Material You color generator")
+	name.set("Material You color generator (deprecated)")
 	description.set("Port of the Material You color generation algorithm for Kotlin")
 	homeUrl.set("https://gitlab.com/opensavvy/ui/material-you-algorithm")
 
